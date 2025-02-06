@@ -12,6 +12,8 @@ html {
 
     padding: 0;
     margin: 0;
+
+    background-color: #CFA6BF;
 }
 
 h1 {
@@ -63,6 +65,10 @@ span {
 }
 
 /* dark */
+.dark-bg {
+    background-image: url('/dark-bg.png');
+}
+
 .dark-text {
     color: #616161
 }

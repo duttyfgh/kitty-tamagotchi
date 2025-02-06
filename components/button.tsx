@@ -2,26 +2,34 @@ interface ButtonProps {
     children: React.ReactNode
     theme: 'dark' | 'light'
     mode: 'primary' | 'secondary'
+    onClick: () => void
 }
 
-const Button = ({ mode, theme, children }: ButtonProps) => {
+const Button = ({ mode, theme, children, onClick }: ButtonProps) => {
     return (
-        <button className={`
+        <button
+            onClick={onClick}
+            className={`
             ${theme === 'light' && mode === 'primary'
-            && 'light-border light-header-bg'
-            }
+                && 'light-border light-header-bg'
+                }
             ${theme === 'dark' && mode === 'primary'
-            && 'dark-border dark-header-bg'
-            }
+                && 'dark-border dark-header-bg'
+                }
             ${theme === 'light' && mode === 'secondary'
-            && 'light-border light-container-bg'
-            }
+                && 'light-border light-container-bg'
+                }
             ${theme === 'dark' && mode === 'secondary'
-            && 'dark-border dark-container-bg'
-            }
+                && 'dark-border dark-container-bg'
+                }
             py-3 flex justify-center items-center w-full rounded-[1rem] shadow-lg
         `}>
-            {children}
+            <span className={`${(theme === 'light')
+                ? 'light-text'
+                : 'dark-text'
+                }`}>
+                {children}
+            </span>
         </button>
     )
 }
