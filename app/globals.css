@@ -1,4 +1,117 @@
+@import url('https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+html {
+    box-sizing: border-box;
+    font-size: calc(100vw / 1920 * 10);
+    font-optical-sizing: auto;
+    text-transform: uppercase;
+
+    padding: 0;
+    margin: 0;
+}
+
+h1 {
+    font-family: "Silkscreen", serif;
+    font-weight: 700;
+    font-style: normal;
+    color: #DD64A2;
+    font-size: 2.4rem;
+}
+
+span {
+    font-family: "Silkscreen", serif;
+    font-weight: 400;
+    font-style: normal;
+    color: #DD64A2;
+    font-size: 2.6rem;
+}
+
+
+/* light */
+.light-bg {
+    background-image: url('/light-bg.png');
+}
+
+.light-header-bg {
+    background-color: #F393B2;
+}
+
+.light-container-bg {
+    background-color: #FCC5D8;
+}
+
+.light-monitor-bg {
+    background-color: #FEDCE7;
+}
+
+.light-border {
+    border: 4px solid #DD64A2;
+}
+
+.light-header-border {
+    border-top: 4px solid #DD64A2;
+    border-right: 4px solid #DD64A2;
+    border-left: 4px solid #DD64A2;
+}
+
+.light-border-bottom {
+    border-bottom: 4px solid #DD64A2;
+}
+
+/* dark */
+.dark-text {
+    color: #616161
+}
+
+.dark-header-bg {
+    background-color: #757575
+}
+
+.dark-container-bg {
+    background-color: #ABABAB;
+}
+
+.dark-monitor-bg {
+    background-color: #E2E2E2;
+}
+
+.dark-border {
+    border: 4px solid #616161
+}
+
+.dark-header-border {
+    border-top: 4px solid #616161;
+    border-right: 4px solid #616161;
+    border-left: 4px solid #616161;
+}
+
+.dark-border-bottom {
+    border-bottom: 4px solid #616161;
+}
+
+.dark-filter {
+    filter: brightness(0) saturate(100%) invert(39%) sepia(35%) saturate(0%) hue-rotate(168deg) brightness(88%) contrast(92%);
+}
+
+@media(max-width: 1024px) {
+    html {
+      font-size: calc(100vw / 768 * 10);
+    }
+  }
+  
+  @media(max-width: 767px) {
+    html {
+      font-size: calc(100vw / 500 * 10);
+    }
+  }
+  
+  @media(max-width: 500px) {
+    html {
+      font-size: calc(100vw / 414 * 10);
+    }
+  }
+  
