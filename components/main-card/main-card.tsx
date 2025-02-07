@@ -3,12 +3,16 @@
 import { ChangeEvent, useEffect, useState } from "react"
 import ModalInputForm from "./modal-input-form"
 import Header from "../header"
+import Monitor from "../monitor"
+import Image from "next/image"
+import { IMood } from "@/mood-manager"
 
 interface MainCardProps {
-    theme: "light" | "dark"
+    theme: "light" | "dark",
+    mood: IMood
 }
 
-const MainCard = ({ theme }: MainCardProps) => {
+const MainCard = ({ theme, mood }: MainCardProps) => {
     const [isModal, setIsModal] = useState<boolean>(false)
     const [name, setName] = useState<string>('name')//TODO: change it into ''
 
@@ -44,7 +48,9 @@ const MainCard = ({ theme }: MainCardProps) => {
                 <Header theme={theme} text={name} isBorderBottom onTextClick={onOpenModal} /> {/* TODO: make ability to kill the kitty by clicking       on header's widgets, and add a modal window: are you sure?
                     */}
                 <div className="p-[1.5rem]">
-
+                    <Monitor theme={theme}>
+                        <Image src={`/kitties/${mood}.png`} width={400} height={347} alt='...' className="scale-110 -mt-10" priority />
+                    </Monitor>
                 </div>
             </div>
         </>
