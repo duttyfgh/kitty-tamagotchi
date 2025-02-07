@@ -24,6 +24,14 @@ h1 {
     font-size: 2.4rem;
 }
 
+input {
+    font-family: "Silkscreen", serif;
+    font-weight: 700;
+    font-style: normal;
+    color: #DD64A2;
+    font-size: 2.4rem;
+}
+
 span {
     font-family: "Silkscreen", serif;
     font-weight: 400;
@@ -105,19 +113,18 @@ span {
 
 @media(max-width: 1024px) {
     html {
-      font-size: calc(100vw / 768 * 10);
+        font-size: calc(100vw / 768 * 10);
     }
-  }
-  
-  @media(max-width: 767px) {
+}
+
+@media(max-width: 767px) {
     html {
-      font-size: calc(100vw / 500 * 10);
+        font-size: calc(100vw / 500 * 10);
     }
-  }
-  
-  @media(max-width: 500px) {
+}
+
+@media(max-width: 500px) {
     html {
-      font-size: calc(100vw / 414 * 10);
+        font-size: calc(100vw / 414 * 10);
     }
-  }
-  
+}
