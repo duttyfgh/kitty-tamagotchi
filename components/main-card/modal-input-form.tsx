@@ -14,7 +14,7 @@ interface ModalInputProps {
 
 const ModalInputForm = ({ theme, name, onChange, onClick }: ModalInputProps) => {
     return (
-        <div className="z-50 absolute right-0 left-0 mx-[1.5rem] top-[30rem]">
+        <div className="z-50 absolute right-0 left-0 mx-[1.5rem] top-[30.3rem]">
             <Card theme={theme} headerText="kitty name" onHeaderClick={onClick}>
                 <div className="flex flex-col gap-6">
                     <Monitor theme={theme} isPadding={false}>
