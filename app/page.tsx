@@ -17,34 +17,33 @@ const App = () => {
   }
 
   return (
-    <div className={`${(theme === 'light') ? 'light-bg' : 'dark-bg'} h-screen`}>
+    <div className={`${(theme === 'light') ? 'light-bg' : 'dark-bg'}`}>
       <Header text="i love you" isBorderBottom={false} theme={theme} />
       <div className={`${(theme === 'light')
         ? 'light-border light-container-bg '
         : 'dark-border dark-container-bg'
         }
-            p-6 flex justify-center items-center rounded-b-[2rem] shadow-lg 
-            `}>
+              p-6 flex justify-center items-center rounded-b-[2rem] shadow-lg 
+              `}>
 
         <Monitor theme={theme}>
           <h1 className={`${(theme === 'light')
             ? 'light-text'
             : 'dark-text'
             }
-            text-[3.4rem] -my-4
-            `}>
-            Happy Valentine&#39;s Day Dianaaa
+              text-[2.3rem] -my-4
+              `}>
+            Happy Valentine&#39;s Day Dianaaa {`<3`}
           </h1>
         </Monitor>
-
       </div>
 
-      <div className="px-[1.7rem] py-[3rem]">
+      <div className="p-[4rem]">
 
         <Card theme={theme}>
           <div className="flex gap-6 flex-col items-center">
             <Monitor theme={theme}>
-              <Image src='/landing-kitty.png' width={400} height={347} alt='...' className="scale-110" />
+              <Image src='/landing-kitty.png' width={400} height={347} alt='...' className="scale-110"/>
             </Monitor>
 
             <Button mode="secondary" theme={theme} onClick={onGetStarted}>get started</Button>

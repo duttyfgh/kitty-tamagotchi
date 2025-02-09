@@ -75,16 +75,16 @@ const kissesPositions = [
         right: '12'
     },
 
-]
+] // TODO: export it from independent file, where will be implemented logic adding scores for kisses, and set it to localStorage
 
 interface MainCardProps {
-    theme: "light" | "dark",
+    theme: "light" | "dark"
     mood: IMood
+    name: string
+    onOpenModal: () => void
 }
 
-const MainCard = ({ theme, mood }: MainCardProps) => {
-    const [isModal, setIsModal] = useState<boolean>(false)
-    const [name, setName] = useState<string>('name')//TODO: change it into ''
+const MainCard = ({ theme, mood, name, onOpenModal }: MainCardProps) => {
 
     //kiss's state
     const [visibleItems, setVisibleItems] = useState<typeof kissesPositions>([])
@@ -138,62 +138,44 @@ const MainCard = ({ theme, mood }: MainCardProps) => {
 
     // else
     useEffect(() => {
-        //TODO: if (!this.session.name) isModal(true)
+        //TODO: check if current session has name, if doesn't: isModal(true)
     }, [])
 
-    const onSetName = (e: ChangeEvent<HTMLInputElement>) => {
-        setName(e.target.value)
-    }
-
-    const onOpenModal = () => {
-        setIsModal(true)
-    }
-
-    const onCloseModal = () => {
-        if (name) {
-            setIsModal(false)
-        }
-    }
 
     return (
-        <>
-            {isModal && <ModalInputForm theme={theme} onChange={onSetName} onClick={onCloseModal} name={name} />}
-            {isModal && <div className="h-screen w-screen bg-[#0000008a] z-20 absolute top-0"></div>}
-
-            <div className={`${(theme === 'light')
-                ? 'light-border light-container-bg' // light
-                : 'dark-border dark-container-bg' // dark
-                }
-                rounded-[2rem] shadow-lg overflow-hidden mt-[3rem] mx-[1.7rem]
+        <div className={`${(theme === 'light')
+            ? 'light-border light-container-bg' // light
+            : 'dark-border dark-container-bg' // dark
+            }
+                rounded-[2rem] shadow-lg overflow-hidden my-[2rem] mx-[4rem] 
             `}>
-                <Header theme={theme} text={name} isBorderBottom onTextClick={onOpenModal} /> {/* TODO: make ability to kill the kitty by clicking       on header's widgets, and add a modal window: are you sure?
+            <Header theme={theme} text={name} isBorderBottom onTextClick={onOpenModal} /> {/* TODO: make ability to kill the kitty by clicking       on header's widgets, and add a modal window: are you sure?
                     */}
-                <div className="p-[1.5rem] flex flex-col gap-6 relative">
-                    <Monitor theme={theme}>
-                        <Image
-                            src={`/kitties/${mood}.png`}
-                            width={400}
-                            height={347}
-                            alt='...'
-                            className="scale-110 -mt-10"
-                            priority
-                        />
+            <div className="p-[1.5rem] flex flex-col gap-6 relative">
+                <Monitor theme={theme} isPadding={false}>
+                    <Image
+                        src={`/kitties/${mood}.png`}
+                        width={400}
+                        height={347}
+                        alt='...'
+                        className="-mt-10"
+                        priority
+                    />
 
-                        <AnimatePresence>
-                            {visibleItems.map((kiss) => (
-                                <Kiss key={kiss.id} id={kiss.id} top={kiss.top} right={kiss.right} />
-                            ))}
-                        </AnimatePresence>
+                    <AnimatePresence>
+                        {visibleItems.map((kiss) => (
+                            <Kiss key={kiss.id} id={kiss.id} top={kiss.top} right={kiss.right} />
+                        ))}
+                    </AnimatePresence>
 
-                    </Monitor>
+                </Monitor>
 
-                    <div className=" flex flex-col gap-4">
-                        <Button mode="primary" theme={theme} onClick={onKiss}>kiss</Button>
-                        <Button mode="secondary" theme={theme} onClick={() => { }}>talk</Button>
-                    </div>
-                </div >
+                <div className=" flex flex-col gap-4">
+                    <Button mode="primary" theme={theme} onClick={onKiss}>kiss</Button>
+                    <Button mode="secondary" theme={theme} onClick={() => { }}>talk</Button>
+                </div>
             </div >
-        </>
+        </div >
     )
 }
 

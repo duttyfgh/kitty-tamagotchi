@@ -14,12 +14,12 @@ interface ModalInputProps {
 
 const ModalInputForm = ({ theme, name, onChange, onClick }: ModalInputProps) => {
     return (
-        <div className="z-50 absolute right-0 left-0 mx-[1.5rem] top-[30.3rem]">
+        <div className="z-50 absolute right-0 left-0 mx-[3rem] top-[25.2rem]">
             <Card theme={theme} headerText="kitty name" onHeaderClick={onClick}>
                 <div className="flex flex-col gap-6">
                     <Monitor theme={theme} isPadding={false}>
                         <input
-                            className="outline-none rounded-2xl px-6 w-full py-3 bg-transparent"
+                            className="outline-none rounded-2xl px-3 w-full bg-transparent"
                             maxLength={10}
                             value={name}
                             onChange={onChange}

@@ -11,7 +11,7 @@ const Monitor = ({ children, theme, isPadding = true }: MonitorProps) => {
             ? 'light-border light-monitor-bg' // light
             : 'dark-border dark-monitor-bg' // dark
             }
-            ${isPadding && 'p-[2.5rem]'}
+            ${isPadding ? 'p-[2.5rem]' : 'p-[2rem] py-6'}
              rounded-[1rem] w-full
             `}>
             {children}

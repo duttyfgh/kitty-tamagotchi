@@ -22,7 +22,7 @@ const ProgressBar = ({ score, theme }: ProgressBarProps) => {
         <div className={`${theme === 'light'
             ? 'light-border'
             : 'dark-border'}
-         rounded-[1rem] flex gap-[0.4rem] py-2 px-[0.6rem]`}>
+         rounded-[1rem] flex gap-[0.3rem] py-[0.4rem] px-[0.6rem]`}>
             {progressBarItems()}
         </div>
     )
