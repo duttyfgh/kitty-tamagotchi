@@ -8,21 +8,20 @@ interface HeartProps {
     id: number
     top: string
     right: string
-    duration: number
     width: number
     appearingAnimation: Variants
 }
 
-const Heart = ({ duration, right, top, width, id, appearingAnimation }: HeartProps) => {
+const Heart = ({  right, top, width, id, appearingAnimation }: HeartProps) => {
     const [isHidden, setIsHidden] = useState<boolean>(false)
 
     useEffect(() => {
         const hideHeart = setTimeout(() => {
             setIsHidden(true)
-        }, duration * 2000)
+        },  5000)
 
         return () => clearTimeout(hideHeart)
-    }, [duration])
+    }, [id])
 
     if (!isHidden) return (
         <motion.div

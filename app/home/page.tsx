@@ -16,6 +16,7 @@ import Monitor from "@/components/monitor"
 import MoodAndScore from "@/components/score-bar/mood-and-score"
 import ProgressBar from "@/components/score-bar/progress-bar"
 import ModalInputForm from "@/components/main-card/modal-input-form"
+import Image from "next/image"
 
 const appearingAnimation: Variants = {
     hidden: {
@@ -27,7 +28,7 @@ const appearingAnimation: Variants = {
 }
 //TODO: when she change her name say "such a beautiful name"
 const HomePage = () => {
-    const [localMood, setLocalMood] = useState<IMood>('exited')//TODO: get this from "get" function which will get it from localStorage
+    const [localMood, setLocalMood] = useState<IMood>('calm')//TODO: get this from "get" function which will get it from localStorage
 
     // name 
     const [name, setName] = useState<string>('name')//TODO: change it into ''
@@ -117,6 +118,7 @@ const HomePage = () => {
 
             // if current talk is "gimme kiss", set it true and hope that Diana will kiss the kitty after this talk, if she does, show "muaaa"(cute video)
             if (newTalk.id === 56) {
+                alert(1)
                 setIsGimmeKiss(true)
             }
 
@@ -156,12 +158,15 @@ const HomePage = () => {
 
         // TODO: push Diana to the next level of happiness if she find this easter egg
         setIsMua(true)
+        setIsTalk(true)
         onHeartsEffect()
 
         // hide "muaaa" talk after 3s showing it
         talkHidingRef.current = setTimeout(() => {
             setIsMua(false)
             setIsGimmeKiss(false)
+            setIsTalk(false)
+
         }, 3000)
     }
 
@@ -181,7 +186,7 @@ const HomePage = () => {
 
         gapBetweenTalksRef.current = setTimeout(() => {
 
-            // here's a hardcoded talk object i've told above
+            // here's a hardcoded talk object I've told above
             setTalk({
                 id: 8,
                 text: 'MEOW <3'
@@ -219,8 +224,8 @@ const HomePage = () => {
                 <AnimatePresence>
                     {isTalk && <Talk text={talk?.text} appearingAnimation={appearingAnimation} />}
 
-                    {isMua && <Talk appearingAnimation={appearingAnimation} text="MUYAAAAA" />}
-                    {isNameCompliment && <Talk appearingAnimation={appearingAnimation} text="BEAUTIFUL NAME <3" />}
+                    {isMua && <Talk appearingAnimation={appearingAnimation} text="MUYAAAAA" key={129192} />}
+                    {isNameCompliment && <Talk appearingAnimation={appearingAnimation} text="BEAUTIFUL NAME <3" key={12314} />}
 
                 </AnimatePresence>
 

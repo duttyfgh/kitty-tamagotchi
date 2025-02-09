@@ -12,8 +12,6 @@ import Kiss from "@/components/kiss"
 import Button from "@/components/button"
 import Hearts from "@/components/hearts/hearts"
 
-//TODO: click at kitty makes "meow" talk
-
 const kissesPositions = [
     {
         id: 0,
@@ -78,6 +76,34 @@ const kissesPositions = [
 
 ] // TODO: export it from independent file, where will be implemented logic adding scores for kisses, and set it to localStorage
 
+const mouthPositions = [
+    {
+        mood: 'exited',
+        top: '11.8',
+        right: '15.6'
+    },
+    {
+        mood: 'happy',
+        top: '11.3',
+        right: '15.6'
+    },
+    {
+        mood: 'calm',
+        top: '11.8',
+        right: '15.6'
+    },
+    {
+        mood: 'sad',
+        top: '12',
+        right: '15.8'
+    },
+    {
+        mood: 'unhappy',
+        top: '11.5',
+        right: '15.8'
+    },
+]
+
 interface MainCardProps {
     theme: "light" | "dark"
     mood: IMood
@@ -110,6 +136,8 @@ const MainCard = ({
     const [visibleItems, setVisibleItems] = useState<typeof kissesPositions>([])
     const [clickCount, setClickCount] = useState<number>(0)
     const [timer, setTimer] = useState<NodeJS.Timeout | null>(null)
+
+    const { top, right } = mouthPositions.find(item => item.mood === mood) || {}
 
     useEffect(() => {
 
@@ -201,8 +229,18 @@ const MainCard = ({
                         ))}
 
                         {isHeartsEffect && <Hearts appearingAnimation={appearingAnimation} />}
-                        
 
+                        {isTalk && <Image
+                            src='/mouth.svg'
+                            width={23}
+                            height={37}
+                            alt='...'
+                            style={{
+                                top: `${top}rem`,
+                                right: `${right}rem`
+                            }}
+                            className="absolute"
+                        />}
                     </AnimatePresence>
                 </Monitor>
 

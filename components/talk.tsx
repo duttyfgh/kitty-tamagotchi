@@ -43,7 +43,7 @@ const Talk = ({ text, appearingAnimation }: TalkProps) => {
                     width={30}
                     height={34}
                     alt='...'
-                    className="absolute bottom-[-2.7rem] leftd-[14rem]  left-1/2 -translate-x-1/2"
+                    className="absolute bottom-[-2.7rem] left-1/2 -translate-x-1/2"
                 />
             </div>
         </motion.div>
