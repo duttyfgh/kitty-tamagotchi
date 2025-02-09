@@ -1,9 +1,10 @@
 'use client'
 
 import { ChangeEvent } from "react"
-import Button from "../button"
-import Card from "../card"
-import Monitor from "../monitor"
+
+import Button from "@/components/button"
+import Card from "@/components/card"
+import Monitor from "@/components/monitor"
 
 interface ModalInputProps {
     theme: "light" | "dark"

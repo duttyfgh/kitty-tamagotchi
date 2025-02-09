@@ -1,37 +1,48 @@
 'use client'
 
-import { ChangeEvent, useEffect, useState } from "react"
-import { AnimatePresence } from "framer-motion"
+import { useEffect, useState } from "react"
+import Image from "next/image"
+import { AnimatePresence, Variants } from "framer-motion"
 
 import { IMood } from "@/mood-manager"
 
 import Header from "@/components/header"
 import Monitor from "@/components/monitor"
-import Image from "next/image"
 import Kiss from "@/components/kiss"
 import Button from "@/components/button"
+import Hearts from "../hearts/hearts"
 
-import ModalInputForm from "./modal-input-form"
+//TODO: click at kitty makes "meow" talk
+
+const appearingAnimation: Variants = {
+    hidden: {
+        opacity: 0,
+    },
+    visible: {
+        opacity: 1,
+    }
+}
+
 
 const kissesPositions = [
     {
         id: 0,
-        top: '15.6', // rem
-        right: '13.8'
+        top: '12.6', // rem
+        right: '13'
     },
     {
         id: 1,
-        top: '11',
-        right: '17.6'
+        top: '12.3',
+        right: '17'
     },
     {
         id: 2,
-        top: '15.8',
-        right: '20'
+        top: '12.8',
+        right: '15.5'
     },
     {
         id: 3,
-        top: '16.5',
+        top: '8',
         right: '17'
     },
     {
@@ -41,41 +52,42 @@ const kissesPositions = [
     },
     {
         id: 5,
-        top: '11',
-        right: '22.7'
+        top: '8',
+        right: '15.5'
     },
     {
         id: 6,
-        top: '7.8',
-        right: '22'
+        top: '6.5',
+        right: '18.7'
     },
     {
         id: 7,
-        top: '12.5',
-        right: '11.5'
+        top: '10.5',
+        right: '10.5'
+    },
+    {
+        id: 8,
+        top: '14',
+        right: '15.5'
     },
     {
         id: 9,
-        top: '13.8',
-        right: '17'
+        top: '5.6',
+        right: '11'
     },
     {
         id: 10,
-        top: '14',
-        right: '22'
+        top: '10',
+        right: '15.5'
     },
     {
         id: 11,
-        top: '19',
-        right: '18'
-    },
-    {
-        id: 12,
-        top: '7',
-        right: '12'
+        top: '9',
+        right: '13'
     },
 
 ] // TODO: export it from independent file, where will be implemented logic adding scores for kisses, and set it to localStorage
+
 
 interface MainCardProps {
     theme: "light" | "dark"
@@ -147,7 +159,7 @@ const MainCard = ({ theme, mood, name, onOpenModal }: MainCardProps) => {
             ? 'light-border light-container-bg' // light
             : 'dark-border dark-container-bg' // dark
             }
-                rounded-[2rem] shadow-lg overflow-hidden my-[2rem] mx-[4rem] 
+                rounded-[2rem] shadow-md  overflow-hidden mt-[2.5rem] mx-[4rem] 
             `}>
             <Header theme={theme} text={name} isBorderBottom onTextClick={onOpenModal} /> {/* TODO: make ability to kill the kitty by clicking       on header's widgets, and add a modal window: are you sure?
                     */}
@@ -164,10 +176,18 @@ const MainCard = ({ theme, mood, name, onOpenModal }: MainCardProps) => {
 
                     <AnimatePresence>
                         {visibleItems.map((kiss) => (
-                            <Kiss key={kiss.id} id={kiss.id} top={kiss.top} right={kiss.right} />
+                            <Kiss
+                                key={kiss.id}
+                                id={kiss.id}
+                                top={kiss.top}
+                                right={kiss.right}
+                                appearingAnimation={appearingAnimation}
+                            />
                         ))}
-                    </AnimatePresence>
 
+                        <Hearts />
+
+                    </AnimatePresence>
                 </Monitor>
 
                 <div className=" flex flex-col gap-4">

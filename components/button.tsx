@@ -22,7 +22,7 @@ const Button = ({ mode, theme, children, onClick }: ButtonProps) => {
             ${theme === 'dark' && mode === 'secondary'
                 && 'dark-border dark-container-bg'
                 }
-            py-3 flex justify-center items-center w-full rounded-[1rem] shadow-lg
+            py-3 flex justify-center items-center w-full rounded-[1rem] shadow-md 
         `}>
             <span className={`${(theme === 'light')
                 ? 'light-text'

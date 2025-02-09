@@ -1,1 +1,1 @@
-export type IMood = 'exited' | 'happy' | 'normal' | 'sad' | 'unhappy' | 'died'
+export type IMood = 'exited' | 'happy' | 'calm' | 'sad' | 'unhappy' | 'died'

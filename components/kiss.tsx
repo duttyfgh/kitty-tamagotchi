@@ -7,23 +7,16 @@ interface KissProps {
     top: string
     right: string
     id: number
+    appearingAnimation: Variants
 }
 
-const kissAppearingAnimation: Variants = {
-    hidden: {
-        opacity: 0,
-    },
-    visible: {
-        opacity: 1,
-    }
-}
 
-const Kiss = ({ id, top, right }: KissProps) => {
+const Kiss = ({ id, top, right, appearingAnimation }: KissProps) => {
     return (
         <motion.div
             animate='visible'
             initial='hidden'
-            variants={kissAppearingAnimation}
+            variants={appearingAnimation}
             exit={{ opacity: 0}}>
             <Image
                 key={id}

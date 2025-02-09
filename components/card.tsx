@@ -13,7 +13,7 @@ const Card = ({ children, headerText, theme, onHeaderClick }: CardProps) => {
             ? 'light-border light-container-bg' // light
             : 'dark-border dark-container-bg' // dark
             }
-            rounded-[2rem] shadow-lg overflow-hidden
+            rounded-[2rem] shadow-md  overflow-hidden
         `}>
             <Header text={headerText} isBorderBottom={true} theme={theme} onClick={onHeaderClick} />
             <div className="p-[1.5rem]">

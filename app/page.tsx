@@ -23,7 +23,7 @@ const App = () => {
         ? 'light-border light-container-bg '
         : 'dark-border dark-container-bg'
         }
-              p-6 flex justify-center items-center rounded-b-[2rem] shadow-lg 
+              p-6 flex justify-center items-center rounded-b-[2rem] shadow-md  
               `}>
 
         <Monitor theme={theme}>

@@ -14,7 +14,7 @@ import ProgressBar from "@/components/score-bar/progress-bar"
 import ModalInputForm from "@/components/main-card/modal-input-form"
 
 const HomePage = () => {
-    const [localMood, setLocalMood] = useState<IMood>('normal')//TODO: get this from "get" function which will get it from localStorage
+    const [localMood, setLocalMood] = useState<IMood>('calm')//TODO: get this from "get" function which will get it from localStorage
     const [name, setName] = useState<string>('name')//TODO: change it into ''
     const [isModal, setIsModal] = useState<boolean>(false)
 
@@ -58,7 +58,7 @@ const HomePage = () => {
                     ? 'light-border light-container-bg' // light
                     : 'dark-border dark-container-bg' // dark
                     }
-                p-6 rounded-b-[2rem] shadow-lg 
+                p-6 rounded-b-[2rem] shadow-md 
             `}>
                     <Monitor theme={theme} isPadding={false}>
                         <div className="flex flex-col gap-8">
