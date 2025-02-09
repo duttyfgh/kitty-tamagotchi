@@ -10,19 +10,9 @@ import Header from "@/components/header"
 import Monitor from "@/components/monitor"
 import Kiss from "@/components/kiss"
 import Button from "@/components/button"
-import Hearts from "../hearts/hearts"
+import Hearts from "@/components/hearts/hearts"
 
 //TODO: click at kitty makes "meow" talk
-
-const appearingAnimation: Variants = {
-    hidden: {
-        opacity: 0,
-    },
-    visible: {
-        opacity: 1,
-    }
-}
-
 
 const kissesPositions = [
     {
@@ -88,15 +78,33 @@ const kissesPositions = [
 
 ] // TODO: export it from independent file, where will be implemented logic adding scores for kisses, and set it to localStorage
 
-
 interface MainCardProps {
     theme: "light" | "dark"
     mood: IMood
     name: string
+    isTalk: boolean
+    isGimmeKiss: boolean
+    isHeartsEffect: boolean
+    appearingAnimation: Variants
     onOpenModal: () => void
+    onTalk: () => void
+    onKittyClick: () => void
+    onShowGimmeKiss: () => void
 }
 
-const MainCard = ({ theme, mood, name, onOpenModal }: MainCardProps) => {
+const MainCard = ({
+    theme,
+    mood,
+    name,
+    isTalk,
+    isGimmeKiss,
+    isHeartsEffect,
+    appearingAnimation,
+    onShowGimmeKiss,
+    onOpenModal,
+    onTalk,
+    onKittyClick,
+}: MainCardProps) => {
 
     //kiss's state
     const [visibleItems, setVisibleItems] = useState<typeof kissesPositions>([])
@@ -119,6 +127,12 @@ const MainCard = ({ theme, mood, name, onOpenModal }: MainCardProps) => {
     }, [visibleItems])// - each time we kiss we do this useEffect
 
     const onKiss = () => {
+        if (isTalk) return
+
+        if (isGimmeKiss) {
+            onShowGimmeKiss()
+        }
+
         if (clickCount < kissesPositions.length) {
             setVisibleItems([...visibleItems, kissesPositions[clickCount]])
             setClickCount(clickCount + 1)
@@ -161,7 +175,7 @@ const MainCard = ({ theme, mood, name, onOpenModal }: MainCardProps) => {
             }
                 rounded-[2rem] shadow-md  overflow-hidden mt-[2.5rem] mx-[4rem] 
             `}>
-            <Header theme={theme} text={name} isBorderBottom onTextClick={onOpenModal} /> {/* TODO: make ability to kill the kitty by clicking       on header's widgets, and add a modal window: are you sure?
+            <Header theme={theme} text={name} isBorderBottom onTextClick={onOpenModal} /> {/* TODO: make ability to kill the kitty by clicking on header's widgets, and add a modal window: are you sure?
                     */}
             <div className="p-[1.5rem] flex flex-col gap-6 relative">
                 <Monitor theme={theme} isPadding={false}>
@@ -172,6 +186,7 @@ const MainCard = ({ theme, mood, name, onOpenModal }: MainCardProps) => {
                         alt='...'
                         className="-mt-10"
                         priority
+                        onClick={onKittyClick}
                     />
 
                     <AnimatePresence>
@@ -185,14 +200,15 @@ const MainCard = ({ theme, mood, name, onOpenModal }: MainCardProps) => {
                             />
                         ))}
 
-                        <Hearts />
+                        {isHeartsEffect && <Hearts appearingAnimation={appearingAnimation} />}
+                        
 
                     </AnimatePresence>
                 </Monitor>
 
                 <div className=" flex flex-col gap-4">
                     <Button mode="primary" theme={theme} onClick={onKiss}>kiss</Button>
-                    <Button mode="secondary" theme={theme} onClick={() => { }}>talk</Button>
+                    <Button mode="secondary" theme={theme} onClick={onTalk}>talk</Button>
                 </div>
             </div >
         </div >
