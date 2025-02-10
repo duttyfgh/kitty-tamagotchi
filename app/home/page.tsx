@@ -6,8 +6,8 @@ import { useRouter } from "next/navigation"
 import { AnimatePresence, Variants } from "framer-motion"
 
 import { theme } from "@/theme"
-import { IMood } from "@/mood-manager"
-import { getTalk, ITalks } from "@/talks"
+import { getMood, IMood, IScoreLimits, scoreLimits } from "@/data/mood-manager"
+import { getTalk, ITalks } from "@/data/talks"
 
 import Talk from "@/components/talk"
 import Header from "@/components/header"
@@ -16,7 +16,7 @@ import Monitor from "@/components/monitor"
 import MoodAndScore from "@/components/score-bar/mood-and-score"
 import ProgressBar from "@/components/score-bar/progress-bar"
 import ModalInputForm from "@/components/main-card/modal-input-form"
-import Image from "next/image"
+import { getName, getScore, updateName } from "@/data"
 
 const appearingAnimation: Variants = {
     hidden: {
@@ -26,12 +26,13 @@ const appearingAnimation: Variants = {
         opacity: 1,
     }
 }
-//TODO: when she change her name say "such a beautiful name"
+
+//TODO: continue from testing change mood and see what will change, and test progress bar, build delete kitty button in main card widgets
 const HomePage = () => {
-    const [localMood, setLocalMood] = useState<IMood>('calm')//TODO: get this from "get" function which will get it from localStorage
+    const [localMood, setLocalMood] = useState<IMood>('calm')
 
     // name 
-    const [name, setName] = useState<string>('name')//TODO: change it into ''
+    const [name, setName] = useState<string>('')//TODO: change it into ''
     const [isModal, setIsModal] = useState<boolean>(false)
 
     // talk 
@@ -46,12 +47,55 @@ const HomePage = () => {
 
     const [isHeartsEffect, setIsHeartsEffect] = useState<boolean>(false)
 
+    // scores
+    const [score, setScore] = useState(100)
+    const [localScoreLimits, setLocalScoreLimits] = useState<IScoreLimits>()
+
     // refs
     const talkHidingRef = useRef<NodeJS.Timeout | null>(null)
     const gapBetweenTalksRef = useRef<NodeJS.Timeout | null>(null)
     const heartsHidingRef = useRef<NodeJS.Timeout | null>(null)
 
     const router = useRouter()
+
+
+
+    useEffect(() => {
+
+        // mood
+        const mood = getMood()
+
+        if (mood) {
+            setLocalMood(mood)
+        }
+
+        // name
+        if (!name) {
+            setIsModal(true)
+        }
+
+        const storageName = getName()
+
+        if (storageName) {
+            setName(storageName)
+            setIsModal(false)
+        }
+
+        // score
+        const newScore = getScore()
+
+        if (newScore) {
+            setScore(newScore)
+        }
+
+    }, [])
+
+    useEffect(() => {
+        // score
+        const scoreByMood = scoreLimits.filter((i) => i.mood === localMood)
+        setLocalScoreLimits(scoreByMood[0])
+
+    }, [localMood])
 
     // block scroll when modal window is active
     useEffect(() => {
@@ -80,23 +124,38 @@ const HomePage = () => {
     }
 
     const onCloseModal = () => {
+        const storageName = getName()
+
         if (name) {
             setIsModal(false)
+
+            if (storageName !== name) {
+                updateName(name)
+            }
         }
 
         // name compliment
         if (talkHidingRef.current) {
             clearTimeout(talkHidingRef.current)
         }
-        setIsNameCompliment(true) // TODO: set true only if new name differ of name in localStorage 
+        if (storageName !== name) {
+            setIsNameCompliment(true)
+            setIsTalk(true)
+        }
         talkHidingRef.current = setTimeout(() => {
             setIsNameCompliment(false)
+            setIsTalk(false)
         }, 3000)
 
     }
 
     // talk
     const onTalk = () => {
+        // TODO: count talks and write in to localStorage current session
+
+        if (isNameCompliment) {
+            setIsNameCompliment(false)
+        }
 
         // clear timeouts if they ended
         if (talkHidingRef.current) {
@@ -118,7 +177,6 @@ const HomePage = () => {
 
             // if current talk is "gimme kiss", set it true and hope that Diana will kiss the kitty after this talk, if she does, show "muaaa"(cute video)
             if (newTalk.id === 56) {
-                alert(1)
                 setIsGimmeKiss(true)
             }
 
@@ -188,7 +246,7 @@ const HomePage = () => {
 
             // here's a hardcoded talk object I've told above
             setTalk({
-                id: 8,
+                id: 1234, // random id to avoid matching with real one
                 text: 'MEOW <3'
             })
             setIsTalk(true)
@@ -215,8 +273,13 @@ const HomePage = () => {
             `}>
                     <Monitor theme={theme} isPadding={false}>
                         <div className="flex flex-col gap-8">
-                            <MoodAndScore mood={localMood} score={12} theme={theme} />
-                            <ProgressBar theme={theme} score={12} />
+                            <MoodAndScore mood={localMood} score={score} theme={theme} />
+                            <ProgressBar
+                             theme={theme}
+                                score={score}
+                                maxScore={localScoreLimits?.maxScore || 0}
+                                minScore={localScoreLimits?.minScore || 0}
+                            />
                         </div>
                     </Monitor>
                 </div>
@@ -224,8 +287,8 @@ const HomePage = () => {
                 <AnimatePresence>
                     {isTalk && <Talk text={talk?.text} appearingAnimation={appearingAnimation} />}
 
-                    {isMua && <Talk appearingAnimation={appearingAnimation} text="MUYAAAAA" key={129192} />}
-                    {isNameCompliment && <Talk appearingAnimation={appearingAnimation} text="BEAUTIFUL NAME <3" key={12314} />}
+                    {isMua && <Talk appearingAnimation={appearingAnimation} text="MUYAAAAA" key='muaaa' />}
+                    {isNameCompliment && <Talk appearingAnimation={appearingAnimation} text="BEAUTIFUL NAME <3" key='beautiful name' />}
 
                 </AnimatePresence>
 

@@ -18,7 +18,7 @@ const Talk = ({ text, appearingAnimation }: TalkProps) => {
             initial='hidden'
             variants={appearingAnimation}
             exit={{ opacity: 0 }}
-            className="absolute left-1/2 -translate-x-1/2 top-[27rem] z-50 shadow-2xl transition-all">
+            className="absolute left-1/2 -translate-x-1/2 top-[27rem] z-30 shadow-2xl transition-all">
             <div className="bg-white border-b-[0.4rem] border-t-[0.4rem] border-black p-[0.8rem] text-center relative inline-block w-max">
                 <Image
                     src='/left-of-talk-block.png'

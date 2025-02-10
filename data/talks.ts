@@ -3,7 +3,7 @@ export interface ITalks {
     text: string,
 }
 
-const talks: ITalks[] = [//TODO: filter array without previous one to avoid repeating
+const talks: ITalks[] = [
     { id: 1, text: "YOU'RE MY PRINCESS" },
     { id: 2, text: "I LOVE YOU" },
     { id: 3, text: "YOU'RE THE BEST" },
@@ -60,8 +60,9 @@ const talks: ITalks[] = [//TODO: filter array without previous one to avoid repe
     { id: 54, text: "YOU'RE MINE" },
     { id: 55, text: "PLEASE BE MINE" },
     { id: 56, text: "GIMME KISS" },
+    { id: 57, text: "525 DAYS TOGETHER" },
 ]
-// TODO: when kitty is talking open it's mouth
+// TODO: avoid repeating talks
 export const getTalk = (): ITalks => {
     const randomIndex = Math.floor(Math.random() * talks.length)
     return talks[randomIndex]

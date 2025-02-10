@@ -1,1 +1,0 @@
-export type IMood = 'exited' | 'happy' | 'calm' | 'sad' | 'unhappy' | 'died'

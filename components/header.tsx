@@ -31,7 +31,7 @@ const Header = ({ text, theme, isBorderBottom, onClick, onTextClick, link }: Hea
             ? (isBorderBottom ? 'light-border-bottom light-header-bg' : 'light-header-border light-header-bg') // light
             : (isBorderBottom ? 'dark-border-bottom dark-header-bg' : 'dark-header-border dark-header-bg') // dark
             }
-            ${text ? 'py-4' : 'py-8'}
+            ${text ? 'py-4' : 'py-7'}
             flex items-center justify-between px-10 
         `}>
 

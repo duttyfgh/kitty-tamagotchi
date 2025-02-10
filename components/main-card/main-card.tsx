@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import Image from "next/image"
 import { AnimatePresence, Variants } from "framer-motion"
 
-import { IMood } from "@/mood-manager"
+import { IMood } from "@/data/mood-manager"
 
 import Header from "@/components/header"
 import Monitor from "@/components/monitor"
@@ -155,6 +155,7 @@ const MainCard = ({
     }, [visibleItems])// - each time we kiss we do this useEffect
 
     const onKiss = () => {
+        // TODO: count kisses and write in to localStorage current session
         if (isTalk) return
 
         if (isGimmeKiss) {
@@ -188,12 +189,6 @@ const MainCard = ({
             setClickCount(0)
         }
     }, [visibleItems])// - check it every time we change visibleItems
-
-
-    // else
-    useEffect(() => {
-        //TODO: check if current session has name, if doesn't: isModal(true)
-    }, [])
 
 
     return (

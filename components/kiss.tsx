@@ -25,7 +25,7 @@ const Kiss = ({ id, top, right, appearingAnimation }: KissProps) => {
                 height={24}
                 alt='💋'
                 style={{ top: `${top}rem`, right: `${right}rem` }}
-                className='absolute transition-all z-50'
+                className='absolute transition-all z-30'
             />
         </motion.div>
     )
