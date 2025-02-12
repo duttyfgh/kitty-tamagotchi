@@ -18,7 +18,7 @@ const MoodAndScore = ({ mood, score, theme }: MoodAndScoreProps) => {
                 ? 'light-text'
                 : 'dark-text'
                 }`}>
-                {score}
+                {Math.floor(score)}
             </h1>
         </div>
     )

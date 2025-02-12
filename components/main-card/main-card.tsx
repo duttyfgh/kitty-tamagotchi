@@ -11,6 +11,7 @@ import Monitor from "@/components/monitor"
 import Kiss from "@/components/kiss"
 import Button from "@/components/button"
 import Hearts from "@/components/hearts/hearts"
+import { addScore } from "@/data"
 
 const kissesPositions = [
     {
@@ -79,12 +80,12 @@ const kissesPositions = [
 const mouthPositions = [
     {
         mood: 'exited',
-        top: '11.8',
+        top: '11.3',
         right: '15.6'
     },
     {
         mood: 'happy',
-        top: '11.3',
+        top: '11.8',
         right: '15.6'
     },
     {
@@ -111,11 +112,15 @@ interface MainCardProps {
     isTalk: boolean
     isGimmeKiss: boolean
     isHeartsEffect: boolean
+    isExceededScore: boolean
     appearingAnimation: Variants
     onOpenModal: () => void
     onTalk: () => void
     onKittyClick: () => void
     onShowGimmeKiss: () => void
+    onOpenKillKittyModal: () => void
+    addKissScore: () => void
+    checkIsAware: () => void
 }
 
 const MainCard = ({
@@ -125,18 +130,23 @@ const MainCard = ({
     isTalk,
     isGimmeKiss,
     isHeartsEffect,
+    isExceededScore,
     appearingAnimation,
     onShowGimmeKiss,
     onOpenModal,
     onTalk,
     onKittyClick,
+    onOpenKillKittyModal,
+    addKissScore,
+    checkIsAware
 }: MainCardProps) => {
 
-    //kiss's state
+    //kiss
     const [visibleItems, setVisibleItems] = useState<typeof kissesPositions>([])
     const [clickCount, setClickCount] = useState<number>(0)
     const [timer, setTimer] = useState<NodeJS.Timeout | null>(null)
 
+    // don't wrap it up useEffect because it won't work
     const { top, right } = mouthPositions.find(item => item.mood === mood) || {}
 
     useEffect(() => {
@@ -154,8 +164,22 @@ const MainCard = ({
         )
     }, [visibleItems])// - each time we kiss we do this useEffect
 
+    useEffect(() => {
+        /* if we've already added each element from kissesPositions[] and deleted everything from visibleItems()
+        *  we still can't kiss be cause we'd try to add to visibleItems item like that kissesPositions[13] 
+        *  but kissesPositions has only 12 items in(so that's wy this "if" is here)
+        *  so if every thing's possible been added we set clickCounter to 0 in order to Diana can kisses again
+        */
+        if (clickCount >= kissesPositions.length && visibleItems.length === 0) {
+            setClickCount(0)
+        }
+    }, [visibleItems])// - check it every time we change visibleItems
+
     const onKiss = () => {
         // TODO: count kisses and write in to localStorage current session
+
+        checkIsAware()
+
         if (isTalk) return
 
         if (isGimmeKiss) {
@@ -165,6 +189,12 @@ const MainCard = ({
         if (clickCount < kissesPositions.length) {
             setVisibleItems([...visibleItems, kissesPositions[clickCount]])
             setClickCount(clickCount + 1)
+            if (!isExceededScore) {
+                addKissScore()
+                addScore(0.5)
+            }
+
+
         } else if (visibleItems.length === 0) {
             setClickCount(0)
             setVisibleItems([])
@@ -178,19 +208,7 @@ const MainCard = ({
         setVisibleItems((prev) => prev.slice(1))
 
     }
-
-    useEffect(() => {
-        /* if we've already added each element from kissesPositions[] and deleted everything from visibleItems()
-        *  we still can't kiss be cause we'd try to add to visibleItems item like that kissesPositions[13] 
-        *  but kissesPositions has only 12 items in(so that's wy this "if" is here)
-        *  so if every thing's possible been added we set clickCounter to 0 in order to Diana can kisses again
-        */
-        if (clickCount >= kissesPositions.length && visibleItems.length === 0) {
-            setClickCount(0)
-        }
-    }, [visibleItems])// - check it every time we change visibleItems
-
-
+    // TODO: connect mouth position to the kitty for different screen width
     return (
         <div className={`${(theme === 'light')
             ? 'light-border light-container-bg' // light
@@ -198,8 +216,8 @@ const MainCard = ({
             }
                 rounded-[2rem] shadow-md  overflow-hidden mt-[2.5rem] mx-[4rem] 
             `}>
-            <Header theme={theme} text={name} isBorderBottom onTextClick={onOpenModal} /> {/* TODO: make ability to kill the kitty by clicking on header's widgets, and add a modal window: are you sure?
-                    */}
+            <Header theme={theme} text={name} isBorderBottom onTextClick={onOpenModal} onClick={onOpenKillKittyModal} />
+
             <div className="p-[1.5rem] flex flex-col gap-6 relative">
                 <Monitor theme={theme} isPadding={false}>
                     <Image

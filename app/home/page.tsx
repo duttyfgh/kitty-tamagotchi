@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation"
 import { AnimatePresence, Variants } from "framer-motion"
 
 import { theme } from "@/theme"
+import { addScore, deleteCurrentSession, getCurrentSession, getExceeded, getIsAware, getName, getScore, onAware, updateName } from "@/data"
 import { getMood, IMood, IScoreLimits, scoreLimits } from "@/data/mood-manager"
 import { getTalk, ITalks } from "@/data/talks"
 
@@ -16,7 +17,7 @@ import Monitor from "@/components/monitor"
 import MoodAndScore from "@/components/score-bar/mood-and-score"
 import ProgressBar from "@/components/score-bar/progress-bar"
 import ModalInputForm from "@/components/main-card/modal-input-form"
-import { getName, getScore, updateName } from "@/data"
+import KillKittyModal from "@/components/kill-kitty-modal"
 
 const appearingAnimation: Variants = {
     hidden: {
@@ -27,12 +28,15 @@ const appearingAnimation: Variants = {
     }
 }
 
-//TODO: continue from testing change mood and see what will change, and test progress bar, build delete kitty button in main card widgets
+// TODO: add loading while data is loading
+// TODO: add kisses and talks counter to LS
+// TODO: add status and died pages
+
 const HomePage = () => {
     const [localMood, setLocalMood] = useState<IMood>('calm')
 
     // name 
-    const [name, setName] = useState<string>('')//TODO: change it into ''
+    const [name, setName] = useState<string>('')//TODO: if she clicks at close widgets in modal window, we don't save her name, we just remain her last one
     const [isModal, setIsModal] = useState<boolean>(false)
 
     // talk 
@@ -48,19 +52,33 @@ const HomePage = () => {
     const [isHeartsEffect, setIsHeartsEffect] = useState<boolean>(false)
 
     // scores
-    const [score, setScore] = useState(100)
+    const [score, setScore] = useState<number>(98)
     const [localScoreLimits, setLocalScoreLimits] = useState<IScoreLimits>()
+
+    // exceeded
+    const [isExceededScore, setIsExceededScore] = useState<boolean>(false)
+
+    // aware
+    const [isAware, setIsAware] = useState<boolean>(false)
+
+    // kill kitty
+    const [isSureModal, setIsSureModal] = useState<boolean>(false)
 
     // refs
     const talkHidingRef = useRef<NodeJS.Timeout | null>(null)
     const gapBetweenTalksRef = useRef<NodeJS.Timeout | null>(null)
     const heartsHidingRef = useRef<NodeJS.Timeout | null>(null)
+    const isAwareRef = useRef<NodeJS.Timeout | null>(null)
 
     const router = useRouter()
 
-
-
     useEffect(() => {
+        //current session
+        const currentSession = getCurrentSession()
+
+        if (!currentSession) {
+            router.push('/')
+        }
 
         // mood
         const mood = getMood()
@@ -85,10 +103,33 @@ const HomePage = () => {
         const newScore = getScore()
 
         if (newScore) {
-            setScore(newScore)
+            setScore(Math.floor(newScore))
         }
 
+        // exceeded
+        const isExceeded = getExceeded()
+        setIsExceededScore(isExceeded)
+
+
     }, [])
+
+    useEffect(() => {
+        const isExceeded = getExceeded()
+        setIsExceededScore(isExceeded)
+
+        const newScore = getScore()
+
+        if (newScore) {
+            setScore(Math.floor(newScore))
+        }
+
+        const mood = getMood()
+
+        if (mood) {
+            setLocalMood(mood)
+        }
+
+    }, [score])
 
     useEffect(() => {
         // score
@@ -153,45 +194,53 @@ const HomePage = () => {
     const onTalk = () => {
         // TODO: count talks and write in to localStorage current session
 
-        if (isNameCompliment) {
-            setIsNameCompliment(false)
-        }
+        checkIsAware()
 
-        // clear timeouts if they ended
-        if (talkHidingRef.current) {
-            clearTimeout(talkHidingRef.current)
-        }
-
-        if (gapBetweenTalksRef.current) {
-            clearTimeout(gapBetweenTalksRef.current)
-        }
-
-        // hide the talk ui if we click and there's an active talk rn
-        if (isTalk) {
-            setIsTalk(false)
-        }
-
-        // this timeout is responsible for hiding talk ui when 3s passed
-        gapBetweenTalksRef.current = setTimeout(() => {
-            const newTalk = getTalk()
-
-            // if current talk is "gimme kiss", set it true and hope that Diana will kiss the kitty after this talk, if she does, show "muaaa"(cute video)
-            if (newTalk.id === 56) {
-                setIsGimmeKiss(true)
+        if (!isAware) {
+            if (isNameCompliment) {
+                setIsNameCompliment(false)
             }
 
-            //if all previous "ifs" failed set new talk and show it 
-            setTalk(newTalk)
-            setIsTalk(true)
+            // clear timeouts if they ended
+            if (talkHidingRef.current) {
+                clearTimeout(talkHidingRef.current)
+            }
 
-            // when 3s passed hide the talk ui
-            talkHidingRef.current = setTimeout(() => {
-                setTalk(null)
+            if (gapBetweenTalksRef.current) {
+                clearTimeout(gapBetweenTalksRef.current)
+            }
+
+            // hide the talk ui if we click and there's an active talk rn
+            if (isTalk) {
                 setIsTalk(false)
-            }, 3000)
+            }
 
-            //if "isTalk if" above is truth, we hide everything for 150ms before showing next talk to make nice visual effect
-        }, 150)
+            // this timeout is responsible for hiding talk ui when 3s passed
+            gapBetweenTalksRef.current = setTimeout(() => {
+                const newTalk = getTalk()
+
+                // if current talk is "gimme kiss", set it true and hope that Diana will kiss the kitty after this talk, if she does, show "muaaa"(cute video)
+                if (newTalk.id === 56) {
+                    setIsGimmeKiss(true)
+                }
+
+                //if all previous "ifs" failed set new talk and show it 
+                setTalk(newTalk)
+                setIsTalk(true)
+                if (!isExceededScore) {
+                    setScore((prev) => prev + 0.5)
+                    addScore(0.5)
+                }
+
+                // when 3s passed hide the talk ui
+                talkHidingRef.current = setTimeout(() => {
+                    setTalk(null)
+                    setIsTalk(false)
+                }, 3000)
+
+                //if "isTalk if" above is truth, we hide everything for 150ms before showing next talk to make nice visual effect
+            }, 150)
+        }
 
     }
 
@@ -217,6 +266,10 @@ const HomePage = () => {
         // TODO: push Diana to the next level of happiness if she find this easter egg
         setIsMua(true)
         setIsTalk(true)
+        if (!isExceededScore) {
+            setScore((prev) => prev + 2)
+            addScore(2.5)
+        }
         onHeartsEffect()
 
         // hide "muaaa" talk after 3s showing it
@@ -258,10 +311,59 @@ const HomePage = () => {
         }, 100)
     }
 
+    // kill kitty 
+    const onOpenKillKittyModal = () => {
+        setIsSureModal(true)
+    }
+
+    // TODO: if she doesn't kill her kitty will say thanks to her
+    const onCloseKillKittyModal = () => {
+        setIsSureModal(false)
+    }
+
+    const onKillKitty = () => {
+        setIsSureModal(false)
+        deleteCurrentSession()
+        router.push('/died')
+    }
+
+    const checkIsAware = () => {
+        if (isAwareRef.current) {
+            clearTimeout(isAwareRef.current)
+        }
+
+        if (isExceededScore) {
+            const isAware = getIsAware()
+            if (!isAware) {
+                setIsAware(true)
+                setIsTalk(true)
+
+                isAwareRef.current = setTimeout(() => {
+                    setIsAware(false)
+                    setIsTalk(false)
+                    onAware()
+                }, 3000)
+            }
+        }
+    }
+
     return (
         <>
-            {isModal && <ModalInputForm theme={theme} onChange={onSetName} onClick={onCloseModal} name={name} />}
-            {isModal && <div className="h-auto w-screen bg-[#0000008a] z-20 absolute top-0 bottom-0 -mb-24"></div>}
+            {isModal && <ModalInputForm
+                theme={theme}
+                onChange={onSetName}
+                onClick={onCloseModal}
+                name={name}
+            />}
+
+            {isSureModal && <KillKittyModal
+                theme={theme}
+                onCloseModal={onCloseKillKittyModal}
+                onKillKitty={onKillKitty}
+                appearingAnimation={appearingAnimation}
+            />}
+
+            {(isModal || isSureModal) && <div className="h-auto w-screen bg-[#0000008a] z-20 absolute top-0 bottom-0 -mb-24"></div>}
 
             <div className={`${theme === 'light' ? 'light-bg' : 'dark-bg'} min-h-screen pb-12`}>
                 <Header text="i love you" isBorderBottom={false} theme={theme} onClick={onHeaderWidgetsClick} />
@@ -275,7 +377,7 @@ const HomePage = () => {
                         <div className="flex flex-col gap-8">
                             <MoodAndScore mood={localMood} score={score} theme={theme} />
                             <ProgressBar
-                             theme={theme}
+                                theme={theme}
                                 score={score}
                                 maxScore={localScoreLimits?.maxScore || 0}
                                 minScore={localScoreLimits?.minScore || 0}
@@ -285,10 +387,11 @@ const HomePage = () => {
                 </div>
 
                 <AnimatePresence>
-                    {isTalk && <Talk text={talk?.text} appearingAnimation={appearingAnimation} />}
+                    {!isAware && isTalk && <Talk text={talk?.text} appearingAnimation={appearingAnimation} />}
 
                     {isMua && <Talk appearingAnimation={appearingAnimation} text="MUYAAAAA" key='muaaa' />}
-                    {isNameCompliment && <Talk appearingAnimation={appearingAnimation} text="BEAUTIFUL NAME <3" key='beautiful name' />}
+                    {!isAware && isNameCompliment && <Talk appearingAnimation={appearingAnimation} text="BEAUTIFUL NAME <3" key='beautiful name' />}
+                    {isAware && <Talk appearingAnimation={appearingAnimation} text="only 48 scores per day" key='aware' isBig={true} />}
 
                 </AnimatePresence>
 
@@ -299,11 +402,15 @@ const HomePage = () => {
                     isGimmeKiss={isGimmeKiss}
                     isTalk={isTalk || false}
                     isHeartsEffect={isHeartsEffect}
+                    isExceededScore={isExceededScore}
                     appearingAnimation={appearingAnimation}
                     onTalk={onTalk}
                     onOpenModal={onOpenModal}
                     onKittyClick={onKittyClick}
                     onShowGimmeKiss={onShowGimmeKiss}
+                    onOpenKillKittyModal={onOpenKillKittyModal}
+                    addKissScore={() => { setScore((prev) => prev + 0.5) }}
+                    checkIsAware={checkIsAware}
                 />
 
             </div>

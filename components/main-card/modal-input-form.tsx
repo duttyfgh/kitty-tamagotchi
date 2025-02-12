@@ -24,6 +24,7 @@ const ModalInputForm = ({ theme, name, onChange, onClick }: ModalInputProps) => 
                             maxLength={10}
                             value={name}
                             onChange={onChange}
+                            autoFocus
                         />
                     </Monitor>
 

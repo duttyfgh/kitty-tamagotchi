@@ -1,4 +1,3 @@
-import { IMood } from "@/data/mood-manager"
 import { nanoid } from "nanoid"
 
 interface ICurrentSession {
@@ -12,12 +11,14 @@ interface ICurrentSession {
     createdAt: string
     diedAt: string | null
     scores: {
-        date: string,
-        scores: number,
+        date: string
+        scores: number
+        isExceeded: boolean
         isAware: boolean
     }[]
 }
 
+const MAX_SCORE = 100// TODO: 24 by default
 
 // GETS
 const getSessions = (): ICurrentSession[] => {
@@ -56,12 +57,41 @@ export const getName = () => {
     return name
 }
 
-
 export const getScore = () => {
     const currentSession = getCurrentSession()
     const score = currentSession?.score
 
     return score
+}
+
+export const getExceeded = (): boolean => {
+    const currentSession = getCurrentSession()
+    const currentDate = getCurrentDate()
+
+    if (currentSession) {
+        const todayScoreRecord = currentSession.scores.find(record => record.date === currentDate)// TODO: replace it to reusable function
+        const isExceeded = todayScoreRecord?.isExceeded
+
+        return isExceeded || false
+    }
+
+    return false
+
+}
+
+export const getIsAware = (): boolean => {
+    const currentSession = getCurrentSession()
+    const currentDate = getCurrentDate()
+
+    if (currentSession) {
+        const todayScoreRecord = currentSession.scores.find(record => record.date === currentDate)
+        const isAware = todayScoreRecord?.isAware
+
+        return isAware || false
+    }
+
+    return false
+
 }
 
 // CREATES
@@ -76,13 +106,14 @@ export const createKittySession = () => {
         kisses: 0,
         talks: 0,
         isActive: true,
-        score: 98,
+        score: 48,
         createdAt,
         diedAt: null,
         scores: [{
             date: createdAt, // for the first time it can be created at by next time I'll change it I'll put the current date
-            isAware: false, // set this to be true when kitty aware her
-            scores: 0
+            scores: 0,
+            isExceeded: false,
+            isAware: false
 
         }]
     }
@@ -143,49 +174,68 @@ export const addTalks = (talks: number) => {
     }
 }
 
-// do like 1 progress bar will response for 1 level of happiness and each level show new progress bar, which Diana'll have to full before going to the next level
-// MAX SCORE = 24(for bar)
-// so I'll have to give each mood has to earn 24 score or lose before going to next level
-
-// kiss and talk + 1 score
-// easter egg + 5
-
-// for each day she can earn only 24 scores, when she gets the limit,
-// TODO: kitty will say it to her if isAware === false
-
-//  scores: {date: Date, scores: number, isAware: boolean} | each time check if  scores in current date are more then 24, we don't add score
-
-// TODO: each time we change score, update scores for current Date, and each time check if current date !== the latest date in array(or if the function of returning current date scores, returns null) we know that there's no record for today, and we'll have to do it
-
-const updateScores = (additionalScore: number) => {
+export const onAware = () => {
     const sessions = getSessions()
-    if (!sessions) return null
+
+    const currentSession = sessions.find(session => session.isActive)
+
+    if (!currentSession) return
+
+    const currentDate = getCurrentDate()
+    const todayScoreRecord = currentSession.scores.find(record => record.date === currentDate)
+
+    if (todayScoreRecord?.scores) {
+        todayScoreRecord.isAware = true
+    }
+
+    localStorage.setItem('sessions', JSON.stringify(sessions))
+}
+
+export const addScore = (additionalScores: number) => {
+    const sessions = getSessions()
 
     const currentSession = sessions.find(session => session.isActive)
     if (!currentSession) return
 
     const currentDate = getCurrentDate()
-    const MAX_SCORE = 24
+    const todayScoreRecord = currentSession.scores.find(record => record.date === currentDate)
 
-    // find record of current day scores
-    let todayScoreRecord = currentSession.scores.find(record => record.date === currentDate)
+    // add score logic
+    if (todayScoreRecord?.scores) {
 
+        // if she exceeds the 24 score limit we'll tell it to her and don't do anything else
+        if (todayScoreRecord.scores >= MAX_SCORE) {
+            todayScoreRecord.isExceeded = true
+
+            // if everything is fine with limit we just add scores
+        } else {
+            currentSession.score += additionalScores
+        }
+    }
+
+    // update scores array
     if (!todayScoreRecord) {
         // if there's no record for today - create new one
         // initial value - additionalScore, or MAX_SCORE, if additionalScore >= MAX_SCORE
-        const initialScore = additionalScore >= MAX_SCORE ? MAX_SCORE : additionalScore
+        const initialScore = additionalScores >= MAX_SCORE ? MAX_SCORE : additionalScores
         currentSession.scores.push({
             date: currentDate,
             scores: initialScore,
-            isAware: false,
+            isExceeded: false,
+            isAware: false// TODO: take it from LS
         })
     } else {
         // If record exit sum their scores with additionalScore
-        const newTotal = todayScoreRecord.scores + additionalScore
+        const newTotal = todayScoreRecord.scores + additionalScores
+
         // if new total is big then 24 save to locaLStorage MAX_SCORE else new total
         todayScoreRecord.scores = newTotal >= MAX_SCORE ? MAX_SCORE : newTotal
     }
 
-    // update data in localStorage
     localStorage.setItem('sessions', JSON.stringify(sessions))
+}
+
+// DELETE
+export const deleteCurrentSession = () => {
+    localStorage.removeItem('sessions')
 }

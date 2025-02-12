@@ -9,8 +9,10 @@ import Header from "@/components/header"
 import Monitor from "@/components/monitor"
 import { theme } from "@/theme"
 import { createKittySession, getCurrentSession } from "@/data"
+import { useState } from "react"
 
 const App = () => {
+
   const router = useRouter()
 
   const onGetStarted = () => {

@@ -31,7 +31,7 @@ export const scoreLimits: IScoreLimits[] = [
     },
     {
         mood: 'calm',
-        minScore: 98,
+        minScore: 97,
         maxScore: 120,
     },
     {
@@ -75,7 +75,7 @@ export const getMood = (): null | IMood => {
         case (score >= 144 && score <= 168):
             return 'exited'
         default:
-            return 'calm'
+            return 'exited'
     }
 
 }
