@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation"
 import { AnimatePresence, Variants } from "framer-motion"
 
 import { theme } from "@/theme"
-import { addScore, addTalks, deleteCurrentSession, getCurrentSession, getExceeded, getIsAware, getName, getScore, onAware, updateName } from "@/data"
+import { addScore, addTalks, checkLastSeen, deleteCurrentSession, getCurrentSession, getExceeded, getIsAware, getName, getScore, onAware, updateName } from "@/data"
 import { getMood, IMood, IScoreLimits, scoreLimits } from "@/data/mood-manager"
 import { getTalk, ITalks } from "@/data/talks"
 
@@ -30,9 +30,6 @@ const appearingAnimation: Variants = {
 
 }
 
-// BUG: talks clipping at mobile browsers
-
-// TODO: add functionality of disincreasing score if you haven't been visit the kitty for a long time
 // BUG: if click lots of times at talk, and it was GIMME KISS, and even if you skip it and click a couple of times at talk more, you'd anyway are able to have gimme kiss animations if you kiss the kitty
 
 const HomePage = () => {
@@ -86,6 +83,13 @@ const HomePage = () => {
         if (!currentSession) {
             router.push('/')
         }
+
+        if(!currentSession?.isActive) {
+            router.push('/died')
+        }
+
+        // last seen
+        checkLastSeen()
 
         // mood
         const mood = getMood()

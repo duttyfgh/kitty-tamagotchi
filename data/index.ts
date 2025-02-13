@@ -1,4 +1,5 @@
 import { nanoid } from "nanoid"
+import { getDaysPassed } from "./day-pased"
 
 export interface ISession {
     id: string
@@ -21,7 +22,7 @@ export interface ISession {
 
 const MAX_SCORE = 24
 
-// GETS
+// LOCAL GETS
 const getSessions = (): ISession[] => {
     if (typeof window === 'undefined' || !window.localStorage) {
         return []
@@ -51,6 +52,18 @@ export const getCurrentSession = () => {
     return currentSession
 }
 
+export const getTodayScoreRecord = () => {
+    const currentSession = getCurrentSession()
+    const currentDate = getCurrentDate()
+
+    if (!currentSession) return
+
+    const todayScoreRecord = currentSession.scores.find(record => record.date === currentDate)
+
+    return todayScoreRecord
+}
+
+// GETS
 export const getName = () => {
     const currentSession = getCurrentSession()
     const name = currentSession?.name
@@ -76,30 +89,19 @@ export const getScore = () => {
 }
 
 export const getExceeded = (): boolean => {
-    const currentSession = getCurrentSession()
-    const currentDate = getCurrentDate()
+    const todayScoreRecord = getTodayScoreRecord()
+    const isExceeded = todayScoreRecord?.isExceeded
 
-    if (currentSession) {
-        const todayScoreRecord = currentSession.scores.find(record => record.date === currentDate)// TODO: replace it to reusable function
-        const isExceeded = todayScoreRecord?.isExceeded
-
-        return isExceeded || false
-    }
-
-    return false
+    return isExceeded || false
 
 }
 
 export const getIsAware = (): boolean => {
-    const currentSession = getCurrentSession()
-    const currentDate = getCurrentDate()
+    const todayScoreRecord = getTodayScoreRecord()
+    const isAware = todayScoreRecord?.isAware
 
-    if (currentSession) {
-        const todayScoreRecord = currentSession.scores.find(record => record.date === currentDate)
-        const isAware = todayScoreRecord?.isAware
+    return isAware || false
 
-        return isAware || false
-    }
 
     return false
 
@@ -111,6 +113,7 @@ export const getInactiveSessions = () => {
 
     return inactiveSessions
 }
+
 
 // CREATES
 export const createKittySession = () => {
@@ -124,7 +127,7 @@ export const createKittySession = () => {
         kisses: 0,
         talks: 0,
         isActive: true,
-        score: 49,
+        score: 25,
         createdAt,
         diedAt: null,
         lastSeen: createdAt,
@@ -251,10 +254,42 @@ export const addScore = (additionalScores: number) => {
     localStorage.setItem('sessions', JSON.stringify(sessions))
 }
 
-export const disincreaseScores = () => {
+// checks
+export const checkLastSeen = () => {
+    const sessions = getSessions()
 
+    const currentSession = sessions.find(session => session.isActive)
+    const currentDate = getCurrentDate()
+
+    if (!currentSession) return
+
+    const lastSeen = currentSession?.lastSeen
+
+    // if she came to the site any another day but today...
+    if (lastSeen !== currentDate) {
+        const dayPassedFromLastSeen = getDaysPassed(lastSeen)
+
+        // ...we check if it's 1 or more days passed...
+        if (dayPassedFromLastSeen >= 1) {
+
+            // ...and if it's true and 1 or more days are passed we disincrease her scores in such a way: 1 day = -10 scores
+            currentSession.score -= (dayPassedFromLastSeen * 10)
+
+            if (currentSession.score < 0) {
+                currentSession.isActive = false
+                currentSession.diedAt = currentDate
+
+            }
+        }
+
+        // even if we didn't disincreased the score we update lastSeen date anyway
+        currentSession.lastSeen = currentDate
+    }
+
+    localStorage.setItem('sessions', JSON.stringify(sessions))
 }
 
+// delete
 export const deleteCurrentSession = () => {
     const sessions = getSessions()
 

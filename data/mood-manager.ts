@@ -12,37 +12,37 @@ export const scoreLimits: IScoreLimits[] = [
     {
         mood: 'died',
         minScore: 0,
-        maxScore: 24,
+        maxScore: 0,
     },
     {
         mood: 'exhausted',
+        minScore: 1,
+        maxScore: 24,
+    },
+    {
+        mood: 'unhappy',
         minScore: 25,
         maxScore: 48,
     },
     {
-        mood: 'unhappy',
+        mood: 'sad',
         minScore: 49,
         maxScore: 72,
     },
     {
-        mood: 'sad',
+        mood: 'calm',
         minScore: 73,
         maxScore: 96,
     },
     {
-        mood: 'calm',
+        mood: 'happy',
         minScore: 97,
         maxScore: 120,
     },
     {
-        mood: 'happy',
+        mood: 'exited',
         minScore: 121,
         maxScore: 144,
-    },
-    {
-        mood: 'exited',
-        minScore: 145,
-        maxScore: 168,
     },
 ]
 
@@ -53,33 +53,32 @@ export const getMood = (): null | IMood => {
         return null
     }
 
-    if (score === 24.5) return 'died'
-    if (score === 48.5) return 'exhausted'
-    if (score === 72.5) return 'unhappy'
-    if (score === 96.5) return 'sad'
-    if (score === 120.5) return 'calm'
-    if (score === 144.5) return 'happy'
+    if (score === 24.5) return 'exhausted'
+    if (score === 48.5) return 'unhappy'
+    if (score === 72.5) return 'sad'
+    if (score === 96.5) return 'calm'
+    if (score === 120.5) return 'happy'
 
     switch (true) {
-        case (score >= 0 && score <= 24):
+        case (score === 0):
             return 'died'
 
-        case (score >= 25 && score <= 48):
+        case (score >= 1 && score <= 24):
             return 'exhausted'
 
-        case (score >= 49 && score <= 72):
+        case (score >= 25 && score <= 48):
             return 'unhappy'
 
-        case (score >= 73 && score <= 96):
+        case (score >= 49 && score <= 72):
             return 'sad'
 
-        case (score >= 97 && score <= 120):
+        case (score >= 73 && score <= 96):
             return 'calm'
 
-        case (score >= 121 && score <= 144):
+        case (score >= 97 && score <= 120):
             return 'happy'
 
-        case (score >= 145 && score <= 168):
+        case (score >= 121):
             return 'exited'
         default:
             return 'exited'
