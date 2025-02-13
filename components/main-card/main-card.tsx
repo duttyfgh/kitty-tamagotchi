@@ -5,13 +5,13 @@ import Image from "next/image"
 import { AnimatePresence, Variants } from "framer-motion"
 
 import { IMood } from "@/data/mood-manager"
+import { addKisses, addScore } from "@/data"
 
-import Header from "@/components/header"
-import Monitor from "@/components/monitor"
 import Kiss from "@/components/kiss"
 import Button from "@/components/button"
+import Header from "@/components/header"
+import Monitor from "@/components/monitor"
 import Hearts from "@/components/hearts/hearts"
-import { addKisses, addScore } from "@/data"
 
 const kissesPositions = [
     {

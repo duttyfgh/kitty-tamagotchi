@@ -1,6 +1,4 @@
-import { motion } from 'framer-motion'
-
-import { Variants } from "framer-motion"
+import { motion, Variants } from "framer-motion"
 import Image from "next/image"
 
 interface KissProps {
@@ -10,14 +8,13 @@ interface KissProps {
     appearingAnimation: Variants
 }
 
-
 const Kiss = ({ id, top, right, appearingAnimation }: KissProps) => {
     return (
         <motion.div
             animate='visible'
             initial='hidden'
             variants={appearingAnimation}
-            exit={{ opacity: 0}}>
+            exit={{ opacity: 0 }}>
             <Image
                 key={id}
                 src='/kiss.svg'

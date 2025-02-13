@@ -6,7 +6,19 @@ import { useRouter } from "next/navigation"
 import { AnimatePresence, Variants } from "framer-motion"
 
 import { theme } from "@/theme"
-import { addScore, addTalks, checkLastSeen, deleteCurrentSession, getCurrentSession, getExceeded, getIsAware, getName, getScore, onAware, updateName } from "@/data"
+import {
+    addScore,
+    addTalks,
+    checkLastSeen,
+    deleteCurrentSession,
+    getCurrentSession,
+    getExceeded,
+    getIsAware,
+    getName,
+    getScore,
+    onAware,
+    updateName
+} from "@/data"
 import { getMood, IMood, IScoreLimits, scoreLimits } from "@/data/mood-manager"
 import { getTalk, ITalks } from "@/data/talks"
 
@@ -25,9 +37,7 @@ const appearingAnimation: Variants = {
     },
     visible: {
         opacity: 1,
-    },
-
-
+    }
 }
 
 // BUG: if click lots of times at talk, and it was GIMME KISS, and even if you skip it and click a couple of times at talk more, you'd anyway are able to have gimme kiss animations if you kiss the kitty
@@ -51,7 +61,6 @@ const HomePage = () => {
     // gimme kiss 
     const [isGimmeKiss, setIsGimmeKiss] = useState<boolean>(false)
     const [isMua, setIsMua] = useState<boolean>(false)
-
     const [isHeartsEffect, setIsHeartsEffect] = useState<boolean>(false)
 
     // scores
@@ -75,16 +84,15 @@ const HomePage = () => {
 
     const router = useRouter()
 
+    // instant 
     useEffect(() => {
-
-        //current session
         const currentSession = getCurrentSession()
 
         if (!currentSession) {
             router.push('/')
         }
 
-        if(!currentSession?.isActive) {
+        if (!currentSession?.isActive) {
             router.push('/died')
         }
 
@@ -123,6 +131,7 @@ const HomePage = () => {
 
     }, [])
 
+    // check has she exceed the limit, each time the score changes
     useEffect(() => {
         const isExceeded = getExceeded()
         setIsExceededScore(isExceeded)
@@ -141,8 +150,9 @@ const HomePage = () => {
 
     }, [score])
 
+
+    // find local score bar limits by mood because in the array it sorted by 'mood'
     useEffect(() => {
-        // score
         const scoreByMood = scoreLimits.filter((i) => i.mood === localMood)
         setLocalScoreLimits(scoreByMood[0])
 
@@ -237,7 +247,7 @@ const HomePage = () => {
             gapBetweenTalksRef.current = setTimeout(() => {
                 const newTalk = getTalk()
 
-                // if current talk is "gimme kiss", set it true and hope that Diana will kiss the kitty after this talk, if she does, show "muaaa"(cute video)
+                // if current talk is "gimme kiss", set it true and hope that Diana will kiss the kitty after this talk, if she does, show "muaaa"
                 if (newTalk.id === 56) {
                     setIsGimmeKiss(true)
                 }
@@ -337,7 +347,6 @@ const HomePage = () => {
     const onCloseKillKittyModal = () => {
         setIsSureModal(false)
 
-        // name compliment
         if (talkHidingRef.current) {
             clearTimeout(talkHidingRef.current)
         }
@@ -358,6 +367,7 @@ const HomePage = () => {
         router.push('/died')
     }
 
+    // is aware
     const checkIsAware = () => {
         if (isAwareRef.current) {
             clearTimeout(isAwareRef.current)

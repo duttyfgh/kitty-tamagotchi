@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import Image from "next/image"
-import {motion,  Variants } from "framer-motion"
+import { motion, Variants } from "framer-motion"
 
 interface HeartProps {
     id: number
@@ -12,14 +12,14 @@ interface HeartProps {
     appearingAnimation: Variants
 }
 
-const Heart = ({  right, top, width, id, appearingAnimation }: HeartProps) => {
+const Heart = ({ right, top, width, id, appearingAnimation }: HeartProps) => {
     const [isHidden, setIsHidden] = useState<boolean>(false)
 
     //BUG: fix bug when after easter egg hearts are hidden and if I click talk they'll appear forever lots of times 
     useEffect(() => {
         const hideHeart = setTimeout(() => {
             setIsHidden(true)
-        },  5000)
+        }, 5000)
 
         return () => clearTimeout(hideHeart)
     }, [id])

@@ -1,7 +1,8 @@
 import { ISession } from "@/data"
+import { dateConverter } from "@/data/date-converter"
+
 import Card from "./card"
 import Monitor from "./monitor"
-import { dateConverter } from "@/data/date-converter"
 
 interface SessionHistoryCardProps {
     inactiveSession: ISession

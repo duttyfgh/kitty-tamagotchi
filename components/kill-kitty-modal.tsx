@@ -1,8 +1,10 @@
 import Image from "next/image"
+
+import { Variants } from "framer-motion"
+
 import Button from "./button"
 import Card from "./card"
 import Monitor from "./monitor"
-import { AnimatePresence, Variants } from "framer-motion"
 import Talk from "./talk"
 
 interface KillKittyModalProps {
@@ -29,9 +31,9 @@ const KillKittyModal = ({ onKillKitty, onCloseModal, theme, appearingAnimation }
                             priority />
                     </Monitor>
 
-                        <div className="absolute left-1/2 -translate-x-1/2 -top-[30.5rem]">
-                            <Talk appearingAnimation={appearingAnimation} text="are you sure?" key='kill' />
-                        </div>
+                    <div className="absolute left-1/2 -translate-x-1/2 -top-[30.5rem]">
+                        <Talk appearingAnimation={appearingAnimation} text="are you sure?" key='kill' />
+                    </div>
 
                     <div className="flex flex-col gap-3">
                         <Button theme={theme} mode="primary" onClick={onCloseModal}>cancel</Button>

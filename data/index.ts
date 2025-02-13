@@ -1,5 +1,5 @@
 import { nanoid } from "nanoid"
-import { getDaysPassed } from "./day-pased"
+import { getDaysPassed } from "./day-passed"
 
 export interface ISession {
     id: string

@@ -5,7 +5,7 @@ interface MonitorProps {
     isContentCenter?: boolean
 }
 
-const Monitor = ({ children, theme, isPadding = true, isContentCenter=false }: MonitorProps) => {
+const Monitor = ({ children, theme, isPadding = true, isContentCenter = false }: MonitorProps) => {
     return (
 
         <div className={`${(theme === 'light')
@@ -14,8 +14,7 @@ const Monitor = ({ children, theme, isPadding = true, isContentCenter=false }: M
             }
             ${isPadding ? 'p-[2.5rem]' : 'p-[2rem] py-6'}
             ${isContentCenter ? '' : 'flex justify-center'}
-             rounded-[1rem] w-full 
-            `}>
+            rounded-[1rem] w-full`}>
             {children}
         </div>
 
