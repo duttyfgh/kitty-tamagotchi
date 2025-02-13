@@ -7,7 +7,6 @@ interface TalkProps {
     appearingAnimation: Variants
 }
 
-//TODO: change all talk sizes and mouth positions into px
 const Talk = ({ text, appearingAnimation, isBig = false }: TalkProps) => {
 
     if (!text) {
@@ -20,7 +19,7 @@ const Talk = ({ text, appearingAnimation, isBig = false }: TalkProps) => {
             initial='hidden'
             variants={appearingAnimation}
             exit={{ opacity: 0 }}
-            className="absolute left-1/2 -translate-x-1/2 top-[27rem] z-30 transition-all">
+            className="absolute left-1/2 -translate-x-1/2 top-[27rem] z-30">
             <div className={`bg-white border-b-[0.4rem] border-t-[4px] border-black shadow-2xl p-[8px] text-center relative inline-block w-max 
                 ${isBig && 'scale-[0.85]'}`}>
                 <Image

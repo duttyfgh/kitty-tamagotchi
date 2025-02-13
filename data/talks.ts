@@ -62,9 +62,21 @@ const talks: ITalks[] = [
     { id: 56, text: "GIMME KISS" },
     { id: 57, text: "525 DAYS TOGETHER" },
 ]
-// TODO: avoid repeating talks
-export const getTalk = (): ITalks => {
-    const randomIndex = Math.floor(Math.random() * talks.length)
-    return talks[randomIndex]
+// assuming `talks` is your original array of ITalks.
+let remainingTalks = [...talks]
 
+export const getTalk = (): ITalks => {
+    // if we've used all talks, reset the remainingTalks list.
+    if (remainingTalks.length === 0) {
+        remainingTalks = [...talks]
+    }
+
+    // pick a random talk from the remaining ones.
+    const randomIndex = Math.floor(Math.random() * remainingTalks.length)
+    const selectedTalk = remainingTalks[randomIndex]
+
+    // remove the selected talk so it won't be repeated.
+    remainingTalks.splice(randomIndex, 1)
+
+    return selectedTalk
 }

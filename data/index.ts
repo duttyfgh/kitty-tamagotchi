@@ -10,6 +10,7 @@ export interface ISession {
     score: number
     createdAt: string
     diedAt: string | null
+    lastSeen: string
     scores: {
         date: string
         scores: number
@@ -18,7 +19,7 @@ export interface ISession {
     }[]
 }
 
-const MAX_SCORE = 1000// TODO: 24 by default
+const MAX_SCORE = 24
 
 // GETS
 const getSessions = (): ISession[] => {
@@ -126,6 +127,7 @@ export const createKittySession = () => {
         score: 49,
         createdAt,
         diedAt: null,
+        lastSeen: createdAt,
         scores: [{
             date: createdAt, // for the first time it can be created at by next time I'll change it I'll put the current date
             scores: 0,
@@ -142,7 +144,6 @@ export const createKittySession = () => {
 
     // push new create or updated array of sessions
     localStorage.setItem('sessions', JSON.stringify(sessions))
-    //TODO: return success text and kitty will say this
 }
 
 // UPDATES
@@ -168,7 +169,6 @@ export const addKisses = (kisses: number) => {
 
         // update kisses in local session
         currentSession.kisses += kisses
-        //TODO: update score by calling score updater function
 
         // then update current session in localStorage
         localStorage.setItem('sessions', JSON.stringify(sessions))
@@ -184,7 +184,6 @@ export const addTalks = (talks: number) => {
 
         // update talks in local session
         currentSession.talks += talks
-        //TODO: update score by calling score updater function
 
         // then update current session in localStorage
         localStorage.setItem('sessions', JSON.stringify(sessions))
@@ -239,7 +238,7 @@ export const addScore = (additionalScores: number) => {
             date: currentDate,
             scores: initialScore,
             isExceeded: false,
-            isAware: false// TODO: take it from LS
+            isAware: false
         })
     } else {
         // If record exit sum their scores with additionalScore
@@ -250,6 +249,10 @@ export const addScore = (additionalScores: number) => {
     }
 
     localStorage.setItem('sessions', JSON.stringify(sessions))
+}
+
+export const disincreaseScores = () => {
+
 }
 
 export const deleteCurrentSession = () => {

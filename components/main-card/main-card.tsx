@@ -16,98 +16,65 @@ import { addKisses, addScore } from "@/data"
 const kissesPositions = [
     {
         id: 0,
-        top: '12.6', // rem
-        right: '13'
+        top: '126', // rem
+        right: '130'
     },
     {
         id: 1,
-        top: '12.3',
-        right: '17'
+        top: '123',
+        right: '170'
     },
     {
         id: 2,
-        top: '12.8',
-        right: '15.5'
+        top: '128',
+        right: '155'
     },
     {
         id: 3,
-        top: '8',
-        right: '17'
+        top: '80',
+        right: '170'
     },
     {
         id: 4,
-        top: '9',
-        right: '19'
+        top: '90',
+        right: '190'
     },
     {
         id: 5,
-        top: '8',
-        right: '15.5'
+        top: '80',
+        right: '155'
     },
     {
         id: 6,
-        top: '6.5',
-        right: '18.7'
+        top: '65',
+        right: '187'
     },
     {
         id: 7,
-        top: '10.5',
-        right: '10.5'
+        top: '105',
+        right: '105'
     },
     {
         id: 8,
-        top: '14',
-        right: '15.5'
+        top: '140',
+        right: '155'
     },
     {
         id: 9,
-        top: '5.6',
-        right: '11'
+        top: '56',
+        right: '110'
     },
     {
         id: 10,
-        top: '10',
-        right: '15.5'
+        top: '100',
+        right: '155'
     },
     {
         id: 11,
-        top: '9',
-        right: '13'
+        top: '90',
+        right: '130'
     },
 
-] // TODO: export it from independent file, where will be implemented logic adding scores for kisses, and set it to localStorage
-
-const mouthPositions = [
-    {
-        mood: 'exited',
-        top: '11.3',
-        right: '15.6'
-    },
-    {
-        mood: 'happy',
-        top: '11.8',
-        right: '15.6'
-    },
-    {
-        mood: 'calm',
-        top: '11.8',
-        right: '15.6'
-    },
-    {
-        mood: 'sad',
-        top: '12',
-        right: '15.8'
-    },
-    {
-        mood: 'exhausted',
-        top: '12.4',
-        right: '15.8'
-    },
-    {
-        mood: 'unhappy',
-        top: '11.5',
-        right: '15.8'
-    },
 ]
 
 interface MainCardProps {
@@ -151,9 +118,6 @@ const MainCard = ({
     const [clickCount, setClickCount] = useState<number>(0)
     const [timer, setTimer] = useState<NodeJS.Timeout | null>(null)
 
-    // don't wrap it up useEffect because it won't work
-    const { top, right } = mouthPositions.find(item => item.mood === mood) || {}
-
     useEffect(() => {
 
         // if there's already a timer, we delete it not to cause deleting kisses while Diana is kissing
@@ -181,7 +145,6 @@ const MainCard = ({
     }, [visibleItems])// - check it every time we change visibleItems
 
     const onKiss = () => {
-        // TODO: count kisses and write in to localStorage current session
 
         checkIsAware()
 
@@ -214,18 +177,18 @@ const MainCard = ({
         setVisibleItems((prev) => prev.slice(1))
 
     }
-    // TODO: connect mouth position to the kitty for different screen width
+
     return (
         <div className={`${(theme === 'light')
             ? 'light-border light-container-bg' // light
             : 'dark-border dark-container-bg' // dark
             }
-                rounded-[2rem] shadow-md  overflow-hidden mt-[2.5rem] mx-[4rem] 
+                rounded-[2rem] shadow-md  overflow-hidden mt-[2.5rem] w-[334px]
             `}>
             <Header theme={theme} text={name} isBorderBottom onTextClick={onOpenModal} onClick={onOpenKillKittyModal} />
 
             <div className="p-[1.5rem] flex flex-col gap-6 relative">
-                <Monitor theme={theme} isPadding={false}>
+                <Monitor theme={theme} isPadding={false} >
                     {mood === 'loading...' ? (
                         <div className="h-[18.5rem] w-[24rem] flex items-center justify-center">
                             <Image
@@ -233,20 +196,22 @@ const MainCard = ({
                                 width={50}
                                 height={50}
                                 alt='...'
-                                className="animate-spin "
+                                className="animate-spin"
                                 priority
                                 onClick={onKittyClick}
                             />
                         </div>
-                    ) : (<Image
-                        src={`/kitties/${mood}.png`}
-                        width={248}
-                        height={223}
-                        alt='...'
-                        className="-mt-10"
-                        priority
-                        onClick={onKittyClick}
-                    />)}
+                    ) : (
+                        <Image
+                            src={`${isTalk ? `/kitties/${mood}-talking.png` : `/kitties/${mood}.png`}`}
+                            width={248}
+                            height={223}
+                            alt='...'
+                            className="-mt-10"
+                            priority
+                            onClick={onKittyClick}
+                        />
+                    )}
 
                     <AnimatePresence>
                         {visibleItems.map((kiss) => (
@@ -259,20 +224,8 @@ const MainCard = ({
                             />
                         ))}
 
-                        {isHeartsEffect && <Hearts appearingAnimation={appearingAnimation} />}
 
-                        {isTalk && <Image
-                            src='/mouth.svg'
-                            width={23}
-                            height={37}
-                            alt='...'
-                            style={{
-                                top: `${top}rem`,
-                                right: `${right}rem`
-                            }}
-                            priority
-                            className="absolute"
-                        />}
+                        {isHeartsEffect && <Hearts appearingAnimation={appearingAnimation} />}
                     </AnimatePresence>
                 </Monitor>
 
@@ -280,8 +233,8 @@ const MainCard = ({
                     <Button mode="primary" theme={theme} onClick={onKiss}>kiss</Button>
                     <Button mode="secondary" theme={theme} onClick={onTalk}>talk</Button>
                 </div>
-            </div >
-        </div >
+            </div>
+        </div>
     )
 }
 

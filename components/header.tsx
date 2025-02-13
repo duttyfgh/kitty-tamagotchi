@@ -32,11 +32,11 @@ const Header = ({ text, theme, isBorderBottom, onClick, onTextClick, link, isWid
             ? (isBorderBottom ? 'light-border-bottom light-header-bg' : 'light-header-border light-header-bg') // light
             : (isBorderBottom ? 'dark-border-bottom dark-header-bg' : 'dark-header-border dark-header-bg') // dark
             }
-            ${text ? 'py-4' : 'py-7'}
+            ${text ? 'py-[10px]' : 'py-[17px]'}
             flex items-center justify-between px-10 
         `}>
 
-            <div className="flex gap-4">
+            <div className="flex gap-[10px]">
                 <Image src="/heart.svg" width={15} height={16} alt="♥" className={`${(theme === 'dark') && 'dark-filter'}`} />
                 {text && (
                     <h1 className={`${(theme === 'dark') && 'dark-text'}`} onClick={onTextClick}>

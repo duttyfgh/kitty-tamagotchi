@@ -25,8 +25,12 @@ const appearingAnimation: Variants = {
     },
     visible: {
         opacity: 1,
-    }
+    },
+
+
 }
+
+// BUG: talks clipping at mobile browsers
 
 // TODO: add functionality of disincreasing score if you haven't been visit the kitty for a long time
 // BUG: if click lots of times at talk, and it was GIMME KISS, and even if you skip it and click a couple of times at talk more, you'd anyway are able to have gimme kiss animations if you kiss the kitty
@@ -36,7 +40,6 @@ const HomePage = () => {
     // mood
     const [localMood, setLocalMood] = useState<IMood | 'loading...'>('loading...')
 
-    //TODO: if she clicks at close widgets in modal window, we don't save her name, we just remain her last one
     // name 
     const [name, setName] = useState<string>('')
     const [isModal, setIsModal] = useState<boolean>(false)
@@ -46,6 +49,7 @@ const HomePage = () => {
     const [talk, setTalk] = useState<ITalks | null>()
 
     const [isNameCompliment, setIsNameCompliment] = useState<boolean>(false)
+    const [isThanks, setIsThanks] = useState<boolean>(false)
 
     // gimme kiss 
     const [isGimmeKiss, setIsGimmeKiss] = useState<boolean>(false)
@@ -112,7 +116,6 @@ const HomePage = () => {
         // exceeded
         const isExceeded = getExceeded()
         setIsExceededScore(isExceeded)
-
 
     }, [])
 
@@ -193,9 +196,17 @@ const HomePage = () => {
 
     }
 
+    const onWidgetsClose = () => {
+        const storageName = getName()
+
+        if (storageName) {
+            setName(storageName)
+            setIsModal(false)
+        }
+    }
+
     // talk
     const onTalk = () => {
-        // TODO: count talks and write in to localStorage current session
 
         checkIsAware()
 
@@ -245,9 +256,9 @@ const HomePage = () => {
                 //if "isTalk if" above is truth, we hide everything for 150ms before showing next talk to make nice visual effect
             }, 150)
         }
-
     }
 
+    // hearts effect
     const onHeartsEffect = () => {
         if (heartsHidingRef.current) {
             clearTimeout(heartsHidingRef.current)
@@ -267,12 +278,11 @@ const HomePage = () => {
             clearTimeout(talkHidingRef.current)
         }
 
-        // TODO: push Diana to the next level of happiness if she find this easter egg
         setIsMua(true)
         setIsTalk(true)
         if (!isExceededScore) {
-            setScore((prev) => prev + 2)
-            addScore(2.5)
+            setScore((prev) => prev + 5)
+            addScore(5)
         }
         onHeartsEffect()
 
@@ -320,9 +330,22 @@ const HomePage = () => {
         setIsSureModal(true)
     }
 
-    // TODO: if she doesn't kill her kitty will say thanks to her
     const onCloseKillKittyModal = () => {
         setIsSureModal(false)
+
+        // name compliment
+        if (talkHidingRef.current) {
+            clearTimeout(talkHidingRef.current)
+        }
+
+        setIsThanks(true)
+        setIsTalk(true)
+
+        talkHidingRef.current = setTimeout(() => {
+            setIsThanks(false)
+            setIsTalk(false)
+        }, 3000)
+
     }
 
     const onKillKitty = () => {
@@ -357,6 +380,7 @@ const HomePage = () => {
                 theme={theme}
                 onChange={onSetName}
                 onClick={onCloseModal}
+                onWidgetsClick={onWidgetsClose}
                 name={name}
             />}
 
@@ -390,32 +414,35 @@ const HomePage = () => {
                     </Monitor>
                 </div>
 
-                <AnimatePresence>
+                <AnimatePresence mode="wait">
                     {!isAware && isTalk && <Talk text={talk?.text} appearingAnimation={appearingAnimation} />}
 
                     {isMua && <Talk appearingAnimation={appearingAnimation} text="MUYAAAAA" key='muaaa' />}
                     {!isAware && isNameCompliment && <Talk appearingAnimation={appearingAnimation} text="BEAUTIFUL NAME <3" key='beautiful name' />}
-                    {isAware && <Talk appearingAnimation={appearingAnimation} text="only 48 scores per day" key='aware' isBig={true} />}
+                    {isAware && <Talk appearingAnimation={appearingAnimation} text="only 24 scores per day" key='aware' isBig={true} />}
+                    {isThanks && <Talk appearingAnimation={appearingAnimation} text="thank you sweety" key='thank' />}
 
                 </AnimatePresence>
 
-                <MainCard
-                    theme={theme}
-                    mood={localMood}
-                    name={name}
-                    isGimmeKiss={isGimmeKiss}
-                    isTalk={isTalk || false}
-                    isHeartsEffect={isHeartsEffect}
-                    isExceededScore={isExceededScore}
-                    appearingAnimation={appearingAnimation}
-                    onTalk={onTalk}
-                    onOpenModal={onOpenModal}
-                    onKittyClick={onKittyClick}
-                    onShowGimmeKiss={onShowGimmeKiss}
-                    onOpenKillKittyModal={onOpenKillKittyModal}
-                    addKissScore={() => { setScore((prev) => prev + 0.5) }}
-                    checkIsAware={checkIsAware}
-                />
+                <div className="w-full flex justify-center">
+                    <MainCard
+                        theme={theme}
+                        mood={localMood}
+                        name={name}
+                        isGimmeKiss={isGimmeKiss}
+                        isTalk={isTalk || false}
+                        isHeartsEffect={isHeartsEffect}
+                        isExceededScore={isExceededScore}
+                        appearingAnimation={appearingAnimation}
+                        onTalk={onTalk}
+                        onOpenModal={onOpenModal}
+                        onKittyClick={onKittyClick}
+                        onShowGimmeKiss={onShowGimmeKiss}
+                        onOpenKillKittyModal={onOpenKillKittyModal}
+                        addKissScore={() => { setScore((prev) => prev + 0.5) }}
+                        checkIsAware={checkIsAware}
+                    />
+                </div>
 
             </div>
         </>

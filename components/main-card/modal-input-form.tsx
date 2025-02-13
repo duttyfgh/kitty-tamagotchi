@@ -11,12 +11,13 @@ interface ModalInputProps {
     name: string
     onChange: (e: ChangeEvent<HTMLInputElement>) => void
     onClick: () => void
+    onWidgetsClick: () => void
 }
 
-const ModalInputForm = ({ theme, name, onChange, onClick }: ModalInputProps) => {
+const ModalInputForm = ({ theme, name, onChange, onClick, onWidgetsClick }: ModalInputProps) => {
     return (
         <div className="z-50 absolute right-0 left-0 mx-[3rem] top-[25.2rem]">
-            <Card theme={theme} headerText="kitty name" onHeaderClick={onClick}>
+            <Card theme={theme} headerText="kitty name" onHeaderClick={onWidgetsClick}>
                 <div className="flex flex-col gap-6">
                     <Monitor theme={theme} isPadding={false}>
                         <input

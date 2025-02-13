@@ -15,7 +15,7 @@ interface HeartProps {
 const Heart = ({  right, top, width, id, appearingAnimation }: HeartProps) => {
     const [isHidden, setIsHidden] = useState<boolean>(false)
 
-    //TODO: fix bug when after easter egg hearts are hidden and if I click talk they'll appear forever lots of times 
+    //BUG: fix bug when after easter egg hearts are hidden and if I click talk they'll appear forever lots of times 
     useEffect(() => {
         const hideHeart = setTimeout(() => {
             setIsHidden(true)
