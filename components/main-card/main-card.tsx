@@ -198,7 +198,7 @@ const MainCard = ({
                 addKissScore()
                 addScore(0.5)
             }
-            
+
             addKisses(1)
 
         } else if (visibleItems.length === 0) {
@@ -270,6 +270,7 @@ const MainCard = ({
                                 top: `${top}rem`,
                                 right: `${right}rem`
                             }}
+                            priority
                             className="absolute"
                         />}
                     </AnimatePresence>

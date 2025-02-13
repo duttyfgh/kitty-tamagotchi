@@ -114,6 +114,10 @@ span {
     filter: brightness(0) saturate(100%) invert(39%) sepia(35%) saturate(0%) hue-rotate(168deg) brightness(88%) contrast(92%);
 }
 
+.restart-shadow {
+    box-shadow: 0 -10px 7px 0px #BEADB7 
+}
+
 @media(max-width: 1024px) {
     html {
         font-size: calc(100vw / 768 * 10);

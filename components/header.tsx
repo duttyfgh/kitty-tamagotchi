@@ -7,13 +7,14 @@ interface HeaderProps {
     theme: 'light' | 'dark'
     text?: string
     link?: string
+    isWidgets?: boolean
     isBorderBottom?: boolean
     onClick?: () => void
     onTextClick?: () => void
-    
+
 }
 
-const Header = ({ text, theme, isBorderBottom, onClick, onTextClick, link }: HeaderProps) => {
+const Header = ({ text, theme, isBorderBottom, onClick, onTextClick, link, isWidgets = true }: HeaderProps) => {
     const router = useRouter()
 
     const onWidgetsClick = () => {
@@ -44,11 +45,11 @@ const Header = ({ text, theme, isBorderBottom, onClick, onTextClick, link }: Hea
                 )}
             </div>
 
-            <button onClick={onWidgetsClick} className="flex items-end gap-4" >
+            {isWidgets && <button onClick={onWidgetsClick} className="flex items-end gap-4" >
                 <Image src="/dash.svg" width={12} height={4} alt="_" className={`${(theme === 'dark') && 'dark-filter'}`} />
                 <Image src="/rectangle.svg" width={12} height={12} alt="▯" className={`${(theme === 'dark') && 'dark-filter'}`} />
                 <Image src="/x-mark.svg" width={12} height={12} alt="X" className={`${(theme === 'dark') && 'dark-filter'}`} />
-            </button>
+            </button>}
 
         </header>
     )

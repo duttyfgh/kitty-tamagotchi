@@ -29,6 +29,7 @@ const Talk = ({ text, appearingAnimation, isBig = false }: TalkProps) => {
                     height={50}
                     alt='...'
                     className="absolute left-[-19px] top-[-4px]"
+                    priority
                 />
 
                 <span className="text-black w-full font-bold text-[22px]">{text}</span>
@@ -47,6 +48,7 @@ const Talk = ({ text, appearingAnimation, isBig = false }: TalkProps) => {
                     height={34}
                     alt='...'
                     className="absolute bottom-[-27px] left-1/2 -translate-x-1/2"
+                    priority
                 />
             </div>
         </motion.div>

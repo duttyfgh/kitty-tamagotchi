@@ -1,6 +1,6 @@
 import { nanoid } from "nanoid"
 
-interface ICurrentSession {
+export interface ISession {
     id: string
     name: string
     days: number
@@ -21,7 +21,7 @@ interface ICurrentSession {
 const MAX_SCORE = 1000// TODO: 24 by default
 
 // GETS
-const getSessions = (): ICurrentSession[] => {
+const getSessions = (): ISession[] => {
     if (typeof window === 'undefined' || !window.localStorage) {
         return []
     }
@@ -31,7 +31,7 @@ const getSessions = (): ICurrentSession[] => {
         if (!sessionsString) {
             return []
         }
-        return JSON.parse(sessionsString) as ICurrentSession[]
+        return JSON.parse(sessionsString) as ISession[]
     } catch (error) {
         return []
     }
@@ -55,6 +55,16 @@ export const getName = () => {
     const name = currentSession?.name
 
     return name
+}
+
+export const getDiedName = () => {
+    const session = getSessions()
+
+    const lastSession = session[session.length - 1]
+
+    const lastName = lastSession?.name
+
+    return lastName
 }
 
 export const getScore = () => {
@@ -94,12 +104,19 @@ export const getIsAware = (): boolean => {
 
 }
 
+export const getInactiveSessions = () => {
+    const sessions = getSessions()
+    const inactiveSessions = sessions.filter((sessions) => sessions.isActive === false)
+
+    return inactiveSessions
+}
+
 // CREATES
 export const createKittySession = () => {
     const id = nanoid()
     const createdAt = getCurrentDate()
 
-    const newSession: ICurrentSession = {
+    const newSession: ISession = {
         id,
         name: '',
         days: 1,

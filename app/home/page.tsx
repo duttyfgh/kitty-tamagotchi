@@ -28,9 +28,6 @@ const appearingAnimation: Variants = {
     }
 }
 
-
-// TODO: add status and died pages
-
 // TODO: add functionality of disincreasing score if you haven't been visit the kitty for a long time
 // BUG: if click lots of times at talk, and it was GIMME KISS, and even if you skip it and click a couple of times at talk more, you'd anyway are able to have gimme kiss animations if you kiss the kitty
 
@@ -41,7 +38,7 @@ const HomePage = () => {
 
     //TODO: if she clicks at close widgets in modal window, we don't save her name, we just remain her last one
     // name 
-    const [name, setName] = useState<string>('loading...')
+    const [name, setName] = useState<string>('')
     const [isModal, setIsModal] = useState<boolean>(false)
 
     // talk 
