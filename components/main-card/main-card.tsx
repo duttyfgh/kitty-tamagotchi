@@ -11,7 +11,7 @@ import Monitor from "@/components/monitor"
 import Kiss from "@/components/kiss"
 import Button from "@/components/button"
 import Hearts from "@/components/hearts/hearts"
-import { addScore } from "@/data"
+import { addKisses, addScore } from "@/data"
 
 const kissesPositions = [
     {
@@ -99,6 +99,11 @@ const mouthPositions = [
         right: '15.8'
     },
     {
+        mood: 'exhausted',
+        top: '12.4',
+        right: '15.8'
+    },
+    {
         mood: 'unhappy',
         top: '11.5',
         right: '15.8'
@@ -107,7 +112,7 @@ const mouthPositions = [
 
 interface MainCardProps {
     theme: "light" | "dark"
-    mood: IMood
+    mood: IMood | 'loading...'
     name: string
     isTalk: boolean
     isGimmeKiss: boolean
@@ -193,7 +198,8 @@ const MainCard = ({
                 addKissScore()
                 addScore(0.5)
             }
-
+            
+            addKisses(1)
 
         } else if (visibleItems.length === 0) {
             setClickCount(0)
@@ -220,15 +226,27 @@ const MainCard = ({
 
             <div className="p-[1.5rem] flex flex-col gap-6 relative">
                 <Monitor theme={theme} isPadding={false}>
-                    <Image
+                    {mood === 'loading...' ? (
+                        <div className="h-[18.5rem] w-[24rem] flex items-center justify-center">
+                            <Image
+                                src='/loading.png'
+                                width={50}
+                                height={50}
+                                alt='...'
+                                className="animate-spin "
+                                priority
+                                onClick={onKittyClick}
+                            />
+                        </div>
+                    ) : (<Image
                         src={`/kitties/${mood}.png`}
-                        width={400}
-                        height={347}
+                        width={248}
+                        height={223}
                         alt='...'
                         className="-mt-10"
                         priority
                         onClick={onKittyClick}
-                    />
+                    />)}
 
                     <AnimatePresence>
                         {visibleItems.map((kiss) => (

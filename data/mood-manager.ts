@@ -53,6 +53,13 @@ export const getMood = (): null | IMood => {
         return null
     }
 
+    if (score === 24.5) return 'died'
+    if (score === 48.5) return 'exhausted'
+    if (score === 72.5) return 'unhappy'
+    if (score === 96.5) return 'sad'
+    if (score === 120.5) return 'calm'
+    if (score === 144.5) return 'happy'
+
     switch (true) {
         case (score >= 0 && score <= 24):
             return 'died'
@@ -72,7 +79,7 @@ export const getMood = (): null | IMood => {
         case (score >= 121 && score <= 144):
             return 'happy'
 
-        case (score >= 144 && score <= 168):
+        case (score >= 145 && score <= 168):
             return 'exited'
         default:
             return 'exited'

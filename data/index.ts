@@ -18,7 +18,7 @@ interface ICurrentSession {
     }[]
 }
 
-const MAX_SCORE = 100// TODO: 24 by default
+const MAX_SCORE = 1000// TODO: 24 by default
 
 // GETS
 const getSessions = (): ICurrentSession[] => {
@@ -106,7 +106,7 @@ export const createKittySession = () => {
         kisses: 0,
         talks: 0,
         isActive: true,
-        score: 48,
+        score: 49,
         createdAt,
         diedAt: null,
         scores: [{
@@ -150,7 +150,7 @@ export const addKisses = (kisses: number) => {
     if (currentSession) {
 
         // update kisses in local session
-        currentSession.kisses = kisses
+        currentSession.kisses += kisses
         //TODO: update score by calling score updater function
 
         // then update current session in localStorage
@@ -166,7 +166,7 @@ export const addTalks = (talks: number) => {
     if (currentSession) {
 
         // update talks in local session
-        currentSession.talks = talks
+        currentSession.talks += talks
         //TODO: update score by calling score updater function
 
         // then update current session in localStorage
@@ -235,7 +235,16 @@ export const addScore = (additionalScores: number) => {
     localStorage.setItem('sessions', JSON.stringify(sessions))
 }
 
-// DELETE
 export const deleteCurrentSession = () => {
-    localStorage.removeItem('sessions')
+    const sessions = getSessions()
+
+    const currentSession = sessions.find(session => session.isActive)
+
+    if (!currentSession) return
+
+    // we don't actually delete we just mark isActive as false
+    currentSession.isActive = false
+    currentSession.diedAt = getCurrentDate()
+
+    localStorage.setItem('sessions', JSON.stringify(sessions))
 }

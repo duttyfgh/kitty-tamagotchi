@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation"
 import { AnimatePresence, Variants } from "framer-motion"
 
 import { theme } from "@/theme"
-import { addScore, deleteCurrentSession, getCurrentSession, getExceeded, getIsAware, getName, getScore, onAware, updateName } from "@/data"
+import { addScore, addTalks, deleteCurrentSession, getCurrentSession, getExceeded, getIsAware, getName, getScore, onAware, updateName } from "@/data"
 import { getMood, IMood, IScoreLimits, scoreLimits } from "@/data/mood-manager"
 import { getTalk, ITalks } from "@/data/talks"
 
@@ -28,15 +28,20 @@ const appearingAnimation: Variants = {
     }
 }
 
-// TODO: add loading while data is loading
-// TODO: add kisses and talks counter to LS
+
 // TODO: add status and died pages
 
-const HomePage = () => {
-    const [localMood, setLocalMood] = useState<IMood>('calm')
+// TODO: add functionality of disincreasing score if you haven't been visit the kitty for a long time
+// BUG: if click lots of times at talk, and it was GIMME KISS, and even if you skip it and click a couple of times at talk more, you'd anyway are able to have gimme kiss animations if you kiss the kitty
 
+const HomePage = () => {
+
+    // mood
+    const [localMood, setLocalMood] = useState<IMood | 'loading...'>('loading...')
+
+    //TODO: if she clicks at close widgets in modal window, we don't save her name, we just remain her last one
     // name 
-    const [name, setName] = useState<string>('')//TODO: if she clicks at close widgets in modal window, we don't save her name, we just remain her last one
+    const [name, setName] = useState<string>('loading...')
     const [isModal, setIsModal] = useState<boolean>(false)
 
     // talk 
@@ -52,7 +57,7 @@ const HomePage = () => {
     const [isHeartsEffect, setIsHeartsEffect] = useState<boolean>(false)
 
     // scores
-    const [score, setScore] = useState<number>(98)
+    const [score, setScore] = useState<number>(0)
     const [localScoreLimits, setLocalScoreLimits] = useState<IScoreLimits>()
 
     // exceeded
@@ -73,6 +78,7 @@ const HomePage = () => {
     const router = useRouter()
 
     useEffect(() => {
+
         //current session
         const currentSession = getCurrentSession()
 
@@ -231,6 +237,7 @@ const HomePage = () => {
                     setScore((prev) => prev + 0.5)
                     addScore(0.5)
                 }
+                addTalks(1)
 
                 // when 3s passed hide the talk ui
                 talkHidingRef.current = setTimeout(() => {

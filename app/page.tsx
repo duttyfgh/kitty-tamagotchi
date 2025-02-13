@@ -3,13 +3,13 @@
 import { useRouter } from "next/navigation"
 import Image from "next/image"
 
+import { theme } from "@/theme"
+import { createKittySession, getCurrentSession } from "@/data"
+
 import Button from "@/components/button"
 import Card from "@/components/card"
 import Header from "@/components/header"
 import Monitor from "@/components/monitor"
-import { theme } from "@/theme"
-import { createKittySession, getCurrentSession } from "@/data"
-import { useState } from "react"
 
 const App = () => {
 

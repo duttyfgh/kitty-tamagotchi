@@ -33,8 +33,10 @@ const KillKittyModal = ({ onKillKitty, onCloseModal, theme, appearingAnimation }
                             <Talk appearingAnimation={appearingAnimation} text="are you sure?" key='kill' />
                         </div>
 
-                    <Button theme={theme} mode="primary" onClick={onCloseModal}>cancel</Button>
-                    <Button theme={theme} mode="secondary" onClick={onKillKitty}>kill</Button>
+                    <div className="flex flex-col gap-3">
+                        <Button theme={theme} mode="primary" onClick={onCloseModal}>cancel</Button>
+                        <Button theme={theme} mode="secondary" onClick={onKillKitty}>kill</Button>
+                    </div>
                 </div>
             </Card>
         </div>
