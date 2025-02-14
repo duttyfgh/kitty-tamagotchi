@@ -221,6 +221,7 @@ const HomePage = () => {
     const onTalk = () => {
 
         checkIsAware()
+        
         if(isMua) {
             setIsMua(false)
         }
