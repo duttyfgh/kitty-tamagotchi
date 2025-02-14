@@ -20,7 +20,7 @@ export interface ISession {
     }[]
 }
 
-const MAX_SCORE = 24
+const MAX_SCORE = 122
 
 // LOCAL GETS
 const getSessions = (): ISession[] => {
