@@ -20,7 +20,7 @@ export interface ISession {
     }[]
 }
 
-const MAX_SCORE = 24
+const MAX_SCORE = 1000
 
 // LOCAL GETS
 const getSessions = (): ISession[] => {
@@ -58,7 +58,7 @@ export const getTodayScoreRecord = () => {
 
     if (!currentSession) return
 
-    const todayScoreRecord = currentSession.scores.find(record => record.date === currentDate)
+    const todayScoreRecord = currentSession.scores.find(record => record.date === currentDate)  
 
     return todayScoreRecord
 }
@@ -102,9 +102,6 @@ export const getIsAware = (): boolean => {
 
     return isAware || false
 
-
-    return false
-
 }
 
 export const getInactiveSessions = () => {
@@ -113,7 +110,6 @@ export const getInactiveSessions = () => {
 
     return inactiveSessions
 }
-
 
 // CREATES
 export const createKittySession = () => {

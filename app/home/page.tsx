@@ -41,6 +41,7 @@ const appearingAnimation: Variants = {
 }
 
 // BUG: if click lots of times at talk, and it was GIMME KISS, and even if you skip it and click a couple of times at talk more, you'd anyway are able to have gimme kiss animations if you kiss the kitty
+// the way to fix it is simply to create independent ref for gimme kiss talk
 
 const HomePage = () => {
 
