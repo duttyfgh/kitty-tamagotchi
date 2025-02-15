@@ -53,12 +53,8 @@ const HomePage = () => {
     const [isTalk, setIsTalk] = useState<boolean>()
     const [talk, setTalk] = useState<ITalks | null>()
 
-    const [isNameCompliment, setIsNameCompliment] = useState<boolean>(false)
-    const [isThanks, setIsThanks] = useState<boolean>(false)
-
     // gimme kiss 
     const [isGimmeKiss, setIsGimmeKiss] = useState<boolean>(false)
-    const [isMua, setIsMua] = useState<boolean>(false)
     const [isHeartsEffect, setIsHeartsEffect] = useState<boolean>(false)
 
     // scores
@@ -198,11 +194,13 @@ const HomePage = () => {
             clearTimeout(talkHidingRef.current)
         }
         if (storageName !== name) {
-            setIsNameCompliment(true)
+            setTalk({
+                id: 123456789, // random id to avoid matching with real one
+                text: 'BEAUTIFUL NAME <3'
+            })
             setIsTalk(true)
         }
         talkHidingRef.current = setTimeout(() => {
-            setIsNameCompliment(false)
             setIsTalk(false)
         }, 3000)
 
@@ -222,18 +220,23 @@ const HomePage = () => {
 
         checkIsAware()
 
-        if (isMua) {
-            setIsMua(false)
-        }
-
-        if (isThanks) {
-            setIsThanks(false)
-        }
-
+        
         if (!isAware) {
-            if (isNameCompliment) {
-                setIsNameCompliment(false)
-            }
+            // if (isMua) {
+            //     setIsMua(false)
+            // }
+
+            // if (isGimmeKiss) {
+            //     setIsGimmeKiss(false)
+            // }
+    
+            // if (isThanks) {
+            //     setIsThanks(false)
+            // }
+    
+            // if (isNameCompliment) {
+            //     setIsNameCompliment(false)
+            // }
 
             // clear timeouts if they ended
             if (talkHidingRef.current) {
@@ -298,7 +301,10 @@ const HomePage = () => {
             clearTimeout(talkHidingRef.current)
         }
 
-        setIsMua(true)
+        setTalk({
+            id: 1234567, // random id to avoid matching with real one
+            text: 'MUYAAAAA'
+        })
         setIsTalk(true)
         if (!isExceededScore) {
             setScore((prev) => prev + 5)
@@ -308,7 +314,6 @@ const HomePage = () => {
 
         // hide "muaaa" talk after 3s showing it
         talkHidingRef.current = setTimeout(() => {
-            setIsMua(false)
             setIsGimmeKiss(false)
             setIsTalk(false)
 
@@ -333,10 +338,12 @@ const HomePage = () => {
 
             // here's a hardcoded talk object I've told above
             setTalk({
-                id: 1234, // random id to avoid matching with real one
+                id: 123456, // random id to avoid matching with real one
                 text: 'MEOW <3'
             })
             setIsTalk(true)
+            setScore((prev) => prev + 0.5)
+            addScore(0.5)
 
             talkHidingRef.current = setTimeout(() => {
                 setTalk(null)
@@ -357,11 +364,13 @@ const HomePage = () => {
             clearTimeout(talkHidingRef.current)
         }
 
-        setIsThanks(true)
+        setTalk({
+            id: 12345678, 
+            text: 'thank you sweety'
+        })
         setIsTalk(true)
 
         talkHidingRef.current = setTimeout(() => {
-            setIsThanks(false)
             setIsTalk(false)
         }, 3000)
 
@@ -438,11 +447,7 @@ const HomePage = () => {
 
                 <AnimatePresence mode="wait">
                     {!isAware && isTalk && <Talk text={talk?.text} appearingAnimation={appearingAnimation} />}
-
-                    {isMua && <Talk appearingAnimation={appearingAnimation} text="MUYAAAAA" key='muaaa' />}
-                    {!isAware && isNameCompliment && <Talk appearingAnimation={appearingAnimation} text="BEAUTIFUL NAME <3" key='beautiful name' />}
                     {isAware && <Talk appearingAnimation={appearingAnimation} text="only 24 scores per day" key='aware' isBig={true} />}
-                    {isThanks && <Talk appearingAnimation={appearingAnimation} text="thank you sweety" key='thank' />}
 
                 </AnimatePresence>
 

@@ -8,11 +8,14 @@ interface TalkProps {
 }
 
 const Talk = ({ text, appearingAnimation, isBig = false }: TalkProps) => {
-
+   
     if (!text) {
         return null
     }
 
+    if(text.length >= 12) {
+        isBig = true
+    }
     return (
         <motion.div
             animate='visible'
