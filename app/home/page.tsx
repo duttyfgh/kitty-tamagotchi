@@ -226,6 +226,10 @@ const HomePage = () => {
             setIsMua(false)
         }
 
+        if (isThanks) {
+            setIsThanks(false)
+        }
+
         if (!isAware) {
             if (isNameCompliment) {
                 setIsNameCompliment(false)
