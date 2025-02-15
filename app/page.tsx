@@ -26,33 +26,35 @@ const App = () => {
   }
 
   return (
-    <div className={`${(theme === 'light') ? 'light-bg' : 'dark-bg'}`}>
-      <Header text="i love you" isBorderBottom={false} theme={theme} />
-      <div className={`${(theme === 'light')
-        ? 'light-border light-container-bg '
-        : 'dark-border dark-container-bg'
-        }
-              p-6 flex justify-center items-center rounded-b-[2rem] shadow-md  
-              `}>
-
-        <Monitor theme={theme}>
-          <h1 className={`${(theme === 'light')
-            ? 'light-text'
-            : 'dark-text'
-            }
-              text-[2.3rem] -my-4
-              `}>
-            Happy Valentine&#39;s Day Dianaaa {`<3`}
-          </h1>
-        </Monitor>
+    <div className={`${(theme === 'light') ? 'light-bg' : 'dark-bg'} flex flex-col items-center h-screen`}>
+      <div>
+        <Header text="i love you" isBorderBottom={false} theme={theme} />
+        <div className={`${(theme === 'light')
+          ? 'light-border light-container-bg '
+          : 'dark-border dark-container-bg'
+          }
+                p-[15px] flex justify-center items-center rounded-b-[20px] shadow-md w-[414px]
+                `}>
+  
+          <Monitor theme={theme}>
+            <h1 className={`${(theme === 'light')
+              ? 'light-text'
+              : 'dark-text'
+              }
+                text-[23px] -my-[15px]
+                `}>
+              Happy Valentine&#39;s Day Dianaaa {`<3`}
+            </h1>
+          </Monitor>
+        </div>
       </div>
 
-      <div className="p-[4rem]">
+      <div className="p-[40px]">
 
         <Card theme={theme}>
-          <div className="flex gap-6 flex-col items-center">
+          <div className="flex gap-[15px] flex-col items-center">
             <Monitor theme={theme}>
-              <Image src='/landing-kitty.png' width={400} height={347} alt='...' className="scale-110" />
+              <Image src='/landing-kitty.png' width={248} height={347} alt='...' />
             </Monitor>
 
             <Button mode="secondary" theme={theme} onClick={onGetStarted}>get started</Button>

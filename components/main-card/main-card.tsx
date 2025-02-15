@@ -183,14 +183,14 @@ const MainCard = ({
             ? 'light-border light-container-bg' // light
             : 'dark-border dark-container-bg' // dark
             }
-                rounded-[2rem] shadow-md  overflow-hidden mt-[2.5rem] w-[334px]
+                rounded-[20px] shadow-md  overflow-hidden mt-[25px] w-[334px]
             `}>
             <Header theme={theme} text={name} isBorderBottom onTextClick={onOpenModal} onClick={onOpenKillKittyModal} />
 
-            <div className="p-[1.5rem] flex flex-col gap-6 relative">
+            <div className="p-[15px] flex flex-col gap-[15px] relative">
                 <Monitor theme={theme} isPadding={false} >
                     {mood === 'loading...' ? (
-                        <div className="h-[18.5rem] w-[24rem] flex items-center justify-center">
+                        <div className="h-[185px] w-[240px] flex items-center justify-center">
                             <Image
                                 src='/loading.png'
                                 width={50}
@@ -207,7 +207,7 @@ const MainCard = ({
                             width={248}
                             height={223}
                             alt='...'
-                            className="-mt-10"
+                            className="-mt-[10px]"
                             priority
                             onClick={onKittyClick}
                         />
@@ -229,7 +229,7 @@ const MainCard = ({
                     </AnimatePresence>
                 </Monitor>
 
-                <div className=" flex flex-col gap-4">
+                <div className=" flex flex-col gap-[10px]">
                     <Button mode="primary" theme={theme} onClick={onKiss}>kiss</Button>
                     <Button mode="secondary" theme={theme} onClick={onTalk}>talk</Button>
                 </div>

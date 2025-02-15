@@ -23,7 +23,7 @@ const SessionHistoryCard = ({ inactiveSession }: SessionHistoryCardProps) => {
             isHeaderWidgets={false}
             headerText={`${dateOfCreating} - ${dateDeath}`}>
             <Monitor theme="dark" isPadding={false}>
-                <div className="flex gap-4 flex-col items-center w-full">
+                <div className="flex gap-[10px] flex-col items-center w-full">
                     <div className="flex w-full justify-between">
                         <h1 className="dark-text">name</h1>
                         <h1 className="dark-text">{name}</h1>

@@ -14,10 +14,10 @@ const Card = ({ children, headerText, theme, onHeaderClick, isHeaderWidgets = tr
             ? 'light-border light-container-bg' // light
             : 'dark-border dark-container-bg' // dark
             }
-            rounded-[2rem] shadow-md  overflow-hidden
+            rounded-[20px] shadow-md overflow-hidden
         `}>
             <Header text={headerText} isBorderBottom={true} theme={theme} onClick={onHeaderClick} isWidgets={isHeaderWidgets} />
-            <div className="p-[1.5rem]">
+            <div className="p-[15px]">
                 {children}
             </div>
         </div>

@@ -30,10 +30,12 @@ const HistoryPage = () => {
     }
 
     return (
-        <div className="dark-bg min-h-screen pb-12">
-            <Header theme="dark" text="history" isBorderBottom />
+        <div className="dark-bg min-h-screen pb-[30px] flex flex-col items-center">
+            <div className="w-[414px] rounded-b-[20px] md:overflow-hidden">
+                <Header theme="dark" text="history" isBorderBottom />
+            </div>
 
-            <div className="p-[2.5rem] flex flex-col gap-10 mb-[6.5rem]">
+            <div className="p-[25px] flex flex-col gap-[25px] mb-[65px]">
 
                 {!inactiveSessions && (
                     <h1 className="dark-text">No items.</h1>
@@ -45,7 +47,7 @@ const HistoryPage = () => {
 
             </div>
 
-            <div className="p-[2.5rem] fixed bottom-0 mx-auto w-full bg-[#BEADB7] restart-shadow">
+            <div className="p-[25px] fixed bottom-0 mx-auto bg-[#BEADB7] restart-shadow w-full max-w-[414px]">
                 <Button theme="dark" mode="primary" onClick={onRestart}>new game</Button>
             </div>
 

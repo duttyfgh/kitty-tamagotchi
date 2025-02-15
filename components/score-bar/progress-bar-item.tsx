@@ -1,6 +1,6 @@
 const ProgressBarItem = () => {
     return (
-        <div className="w-[1rem] h-[1.5rem] bg-[#DD64A2] rounded-[0.4rem]"></div>
+        <div className="w-[10px] h-[15px] bg-[#DD64A2] rounded-[4px]"></div>
     )
 }
 

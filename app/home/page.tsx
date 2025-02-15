@@ -221,8 +221,8 @@ const HomePage = () => {
     const onTalk = () => {
 
         checkIsAware()
-        
-        if(isMua) {
+
+        if (isMua) {
             setIsMua(false)
         }
 
@@ -407,27 +407,29 @@ const HomePage = () => {
                 appearingAnimation={appearingAnimation}
             />}
 
-            {(isModal || isSureModal) && <div className="h-auto w-screen bg-[#0000008a] z-20 absolute top-0 bottom-0 -mb-24"></div>}
+            {(isModal || isSureModal) && <div className="h-auto w-screen bg-[#0000008a] z-20 absolute top-0 bottom-0 -mb-[240px]"></div>}
 
-            <div className={`${theme === 'light' ? 'light-bg' : 'dark-bg'} min-h-screen pb-12`}>
-                <Header text="i love you" isBorderBottom={false} theme={theme} onClick={onHeaderWidgetsClick} />
-                <div className={`${(theme === 'light')
-                    ? 'light-border light-container-bg' // light
-                    : 'dark-border dark-container-bg' // dark
-                    }
-                p-6 rounded-b-[2rem] shadow-md 
-            `}>
-                    <Monitor theme={theme} isPadding={false}>
-                        <div className="flex flex-col gap-8">
-                            <MoodAndScore mood={localMood} score={score} theme={theme} />
-                            <ProgressBar
-                                theme={theme}
-                                score={score}
-                                maxScore={localScoreLimits?.maxScore || 0}
-                                minScore={localScoreLimits?.minScore || 0}
-                            />
-                        </div>
-                    </Monitor>
+            <div className={`${theme === 'light' ? 'light-bg' : 'dark-bg'} min-h-screen pb-[30px] flex flex-col items-center `}>
+                <div className="w-[414px]">
+                    <Header text="i love you" isBorderBottom={false} theme={theme} onClick={onHeaderWidgetsClick} />
+                    <div className={`${(theme === 'light')
+                        ? 'light-border light-container-bg' // light
+                        : 'dark-border dark-container-bg' // dark
+                        }
+                    p-[15px] rounded-b-[20px] shadow-md
+                `}>
+                        <Monitor theme={theme} isPadding={false}>
+                            <div className="flex flex-col gap-[20px]">
+                                <MoodAndScore mood={localMood} score={score} theme={theme} />
+                                <ProgressBar
+                                    theme={theme}
+                                    score={score}
+                                    maxScore={localScoreLimits?.maxScore || 0}
+                                    minScore={localScoreLimits?.minScore || 0}
+                                />
+                            </div>
+                        </Monitor>
+                    </div>
                 </div>
 
                 <AnimatePresence mode="wait">

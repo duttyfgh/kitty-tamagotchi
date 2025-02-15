@@ -12,9 +12,9 @@ const Monitor = ({ children, theme, isPadding = true, isContentCenter = false }:
             ? 'light-border light-monitor-bg' // light
             : 'dark-border dark-monitor-bg' // dark
             }
-            ${isPadding ? 'p-[2.5rem]' : 'p-[2rem] py-6'}
+            ${isPadding ? 'p-[25px]' : 'p-[20px] py-[15px]'}
             ${isContentCenter ? '' : 'flex justify-center'}
-            rounded-[1rem] w-full`}>
+            rounded-[10px] `}>
             {children}
         </div>
 
