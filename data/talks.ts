@@ -178,7 +178,7 @@ const talks: ITalks[] = [
     { id: 170, text: "I WISH I WAS SPECIAL" },
     { id: 171, text: "YOU ALL I NEED" },
     { id: 172, text: "ALWAYS MY FAVORITE" },
-    { id: 173, text: "YOU AROUSE ME" },
+    { id: 173, text: "YOU'RE ADORABLE" },
     { id: 174, text: "I ADORE YOUR SMILE" },
     { id: 175, text: "I ADORE YOUR EYES" },
     { id: 176, text: "I ADORE YOU ALL" },
